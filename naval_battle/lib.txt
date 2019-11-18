@@ -1,0 +1,5 @@
+fltkd.lib
+wsock32.lib
+comctl32.lib
+fltkjpegd.lib
+fltkimagesd.lib
