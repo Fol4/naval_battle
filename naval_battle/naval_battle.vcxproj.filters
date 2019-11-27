@@ -15,57 +15,52 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Window.h">
+    <ClInclude Include="Constant.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Simple_window.h">
+    <ClInclude Include="fltk.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Point.h">
+    <ClInclude Include="Graph.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\MyWindow.h">
+    <ClInclude Include="GUI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\GUI.h">
+    <ClInclude Include="MyWindow.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Graph.h">
+    <ClInclude Include="Point.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\fltk.h">
+    <ClInclude Include="Window.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Field.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Constant.h">
+    <ClInclude Include="Simple_window.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Field.cpp">
+    <ClCompile Include="Field.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Graph.cpp">
+    <ClCompile Include="FieldChunck.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\GUI.cpp">
+    <ClCompile Include="Graph.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\main.cpp">
+    <ClCompile Include="GUI.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\MyWindow.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Window.cpp">
+    <ClCompile Include="MyWindow.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\..\Desktop\naval_battle\naval_battle\lib.txt">
+    <ClCompile Include="Window.cpp">
       <Filter>Исходные файлы</Filter>
-    </Text>
+    </ClCompile>
   </ItemGroup>
 </Project>

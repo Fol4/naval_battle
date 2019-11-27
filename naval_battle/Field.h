@@ -1,13 +1,10 @@
 #pragma once
+#include "FieldChunck.h"
 
-
-<<<<<<< Updated upstream
-
-=======
 class Field : MyWindow
 {
 public:
-	Field(Graph_lib::Point p, int size);
+	Field(Graph_lib::Point p, int size, const std::string& title);
 
 	void hide() {}
 	void draw() {}
@@ -26,5 +23,5 @@ private:
 	int startX;
 	int startY;
 };
->>>>>>> Stashed changes
+
 

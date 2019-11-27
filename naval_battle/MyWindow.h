@@ -1,7 +1,7 @@
 #pragma once 
 #include "Constant.h"
 
-struct MyWindow : public Graph_lib::Window
+struct MyWindow : Graph_lib::Window
 {
 	MyWindow(Graph_lib::Point p, int w, int h, const std::string& title);
 

@@ -144,26 +144,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Constant.h" />
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Field.h" />
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\fltk.h" />
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Graph.h" />
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\GUI.h" />
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\MyWindow.h" />
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Point.h" />
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Simple_window.h" />
-    <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Window.h" />
+    <ClInclude Include="Constant.h" />
+    <ClInclude Include="fltk.h" />
+    <ClInclude Include="Graph.h" />
+    <ClInclude Include="GUI.h" />
+    <ClInclude Include="MyWindow.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="Simple_window.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Field.cpp" />
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Graph.cpp" />
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\GUI.cpp" />
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\main.cpp" />
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\MyWindow.cpp" />
-    <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\..\Desktop\naval_battle\naval_battle\lib.txt" />
+    <ClCompile Include="Field.cpp" />
+    <ClCompile Include="FieldChunck.cpp" />
+    <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyWindow.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
