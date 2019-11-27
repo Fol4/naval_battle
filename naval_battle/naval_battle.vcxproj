@@ -153,6 +153,7 @@
     <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Point.h" />
     <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Simple_window.h" />
     <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Window.h" />
+    <ClInclude Include="FieldChunck.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Field.cpp" />
@@ -161,6 +162,8 @@
     <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\main.cpp" />
     <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\MyWindow.cpp" />
     <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Window.cpp" />
+    <ClCompile Include="Constant.cpp" />
+    <ClCompile Include="FieldChunck.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\Desktop\naval_battle\naval_battle\lib.txt" />

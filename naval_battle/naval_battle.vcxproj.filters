@@ -42,6 +42,9 @@
     <ClInclude Include="..\..\..\..\Desktop\naval_battle\naval_battle\Constant.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="FieldChunck.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Field.cpp">
@@ -60,6 +63,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Desktop\naval_battle\naval_battle\Window.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Constant.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldChunck.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
