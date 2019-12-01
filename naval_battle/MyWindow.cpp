@@ -51,6 +51,9 @@ void MyWindow::next()
 
 	Ship(Start, End);
 	
+	for (int i = Start.x - 1; i < End.x; ++i)
+		for (int j = Start.y - 1; j < Start.y; ++j)
+			position[i][j] = 1;
 }
 
 

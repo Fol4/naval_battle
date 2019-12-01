@@ -4,7 +4,9 @@
 struct MyWindow : Graph_lib::Window
 {
 	MyWindow(Graph_lib::Point p, int w, int h, const std::string& title);
-	
+protected:
+	std::vector<std::vector<int>> position = 
+		matrix_2d<int>(10, 10, 0);
 private:
 	void quit() { hide(); }
 	void next();

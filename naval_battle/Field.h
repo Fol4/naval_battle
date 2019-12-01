@@ -11,9 +11,8 @@ public:
 
 	void clicked();
 private:
-	std::vector<std::vector<int*>> position = matrix_2d<int*>(10, 10, nullptr);
 	std::vector<std::vector<FieldChunck*>> field;
-	int squareLenght;
+	int squareLenght = cell_size;
 	int startX;
 	int startY;
 };
