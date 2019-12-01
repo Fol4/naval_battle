@@ -4,7 +4,7 @@ using namespace std;
 using namespace Graph_lib;
 
 MyWindow::MyWindow(Point p, int w, int h, const std::string& title) :
-	Graph_lib::Window{ p, w, h, title },
+	Graph_lib::Window{ p, w, h, title  },
 	quit_button{ Point{x_max() - 100, 10}, 70, 20, "Quit",
 	[](Address, Address pw) {
 							 reference_to<MyWindow>(pw).next();
@@ -24,5 +24,33 @@ MyWindow::MyWindow(Point p, int w, int h, const std::string& title) :
 	attach(start);
 	attach(end);
 }
+
+Point string_to_Point(const string& s)
+{
+	int y { s[s.length] };
+	string strX = "";
+
+	for (const auto& c : s)
+		if (c == ':')
+			break;
+		else
+			strX += c;
+
+	int x = atoi(strX.c_str());
+
+	return { x,y };
+}
+
+void MyWindow::next()
+{
+	string StartCord = start.get_string();
+	string EndCord = end.get_string();
+
+	Point Start = string_to_Point(StartCord);
+	Point End = string_to_Point(EndCord);
+
+
+}
+
 
 

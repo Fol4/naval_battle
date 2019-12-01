@@ -13,8 +13,14 @@ Field::Field(Point p, int size, const std::string& title):
 		field.emplace_back();
 		for (int j = 0; j < 10; ++j)
 		{
-			field[i].push_back(new FieldChunck({ startY + i * squareLenght, startX + j * squareLenght },
-				cb_clicked, squareLenght));
+			field[i].push_back(new FieldChunck({ startY + i * squareLenght,
+				startX + j * squareLenght },
+				[](Graph_lib::Address, Graph_lib::Address pw)
+			{
+				Graph_lib::reference_to<Field>(pw).clicked();
+			}
+			, squareLenght));
 		}
 	}
 }
+

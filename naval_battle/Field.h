@@ -9,16 +9,10 @@ public:
 	void hide() {}
 	void draw() {}
 
-private:
-	static void cb_clicked(Graph_lib::Address, Graph_lib::Address pw)
-	{
-		Graph_lib::reference_to<Field>(pw).clicked();
-	}
-
 	void clicked();
-
+private:
 	std::vector<std::vector<int*>> position = matrix_2d<int*>(10, 10, nullptr);
-	std::vector<std::vector<FieldChunck>> field;
+	std::vector<std::vector<FieldChunck*>> field;
 	int squareLenght;
 	int startX;
 	int startY;
