@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <exception>
+#include <cmath>
 #include "Graph.h"
 #include "Simple_window.h"
 

@@ -1,18 +1,11 @@
 #pragma once
 #include "Constant.h"
 
-enum Direction
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};
-
-class Ship : public Image
+class Ship : public Graph_lib::Image
 {
 public:
-	Ship (int amount, direction dir);
+	Ship(Graph_lib::Point p1, Graph_lib::Point p2)
+	//	:n{ delta+1 } {}
 private:
-	int amount;
-	Direction dir;
+//	int delta = abs(Graph_lib::Point p2.x - Graph_lib::Point p1.x) + abs(Graph_lib::Point p2.y - Graph_lib::p1.y);
+}
