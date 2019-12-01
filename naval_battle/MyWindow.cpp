@@ -25,7 +25,7 @@ MyWindow::MyWindow(Point p, int w, int h, const std::string& title) :
 	attach(end);
 }
 
-Point string_to_Point(const string& s)
+point string_to_point(const string& s)
 {
 	int y { s[s.length] };
 	string strX = "";
@@ -46,10 +46,11 @@ void MyWindow::next()
 	string StartCord = start.get_string();
 	string EndCord = end.get_string();
 
-	Point Start = string_to_Point(StartCord);
-	Point End = string_to_Point(EndCord);
+	point Start = string_to_point(StartCord);
+	point End = string_to_point(EndCord);
 
-
+	Ship(Start, End);
+	
 }
 
 

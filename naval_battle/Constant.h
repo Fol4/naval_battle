@@ -26,3 +26,13 @@ std::vector<std::vector<T>> matrix_2d(int h, int l, T fill = 0)
 	return res;
 } 
 
+struct point
+{
+	int x;
+	int y;
+	point(int xx, int yy) : x{ xx }, y{ yy } {}
+};
+
+constexpr int cell_size{ 70 };
+constexpr int start_x = 100;
+constexpr int start_y = 100;

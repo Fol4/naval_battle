@@ -1,5 +1,5 @@
 #pragma once 
-#include "Constant.h"
+#include "Ship.h"
 
 struct MyWindow : Graph_lib::Window
 {
