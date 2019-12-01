@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string.h>
 #include <exception>
+#include <cmath>
 #include "Graph.h"
 #include "Simple_window.h"
 
