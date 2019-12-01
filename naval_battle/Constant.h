@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <sstream>
+#include <cmath>
 #include <string.h>
 #include <exception>
 #include <cmath>

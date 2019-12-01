@@ -9,3 +9,4 @@ public:
 private:
 //	int delta = abs(Graph_lib::Point p2.x - Graph_lib::Point p1.x) + abs(Graph_lib::Point p2.y - Graph_lib::p1.y);
 }
+
