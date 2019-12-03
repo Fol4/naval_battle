@@ -1,4 +1,4 @@
-#include "MyWindow.h"
+#include "Field.h"
 
 using namespace std;
 using namespace Graph_lib;
@@ -6,7 +6,7 @@ using namespace Graph_lib;
 int main()
 try
 {
-	MyWindow win{ {100, 100}, 800, 800, "test" };
+	Field f{ {start_x,start_y}, cell_size, "Field" };
 
 	return gui_main();
 }

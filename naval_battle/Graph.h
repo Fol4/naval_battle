@@ -181,7 +181,7 @@ public:
   void set_fill_color (Color col)  { fcolor = col; }
   Color fill_color () const  { return fcolor; }
 
-  Point point (int i) const  { return points[i]; }
+  Point field_point (int i) const  { return points[i]; }
   int number_of_points () const  { return int(points.size()); }
 
   virtual ~Shape ()  { }
@@ -336,7 +336,7 @@ struct Circle : Shape
 
   void draw_lines () const override;
 
-  Point center () const  { return { point(0).x + r, point(0).y + r }; }
+  Point center () const  { return { field_point(0).x + r, field_point(0).y + r }; }
 
   void set_radius (int rr)  { r = rr; }
   int radius () const  { return r; }
@@ -356,7 +356,7 @@ struct Ellipse : Shape
 
   void draw_lines () const override;
 
-  Point center () const  { return { point(0).x + w, point(0).y + h }; }
+  Point center () const  { return { field_point(0).x + w, field_point(0).y + h }; }
   Point focus1 () const;
   Point focus2 () const;
 
@@ -426,7 +426,7 @@ struct Image : Shape
 
   void draw_lines () const override;
   void set_mask (Point xy, int ww, int hh)  { w = ww; h = hh; cx = xy.x; cy = xy.y; }
-  void move (int dx, int dy) override  { Shape::move(dx, dy); p->draw(point(0).x, point(0).y); }
+  void move (int dx, int dy) override  { Shape::move(dx, dy); p->draw(field_point(0).x, field_point(0).y); }
 
 private:
   int w, h, cx, cy;  // define "masking box" within image relative to position (cx,cy)

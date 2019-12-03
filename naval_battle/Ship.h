@@ -1,16 +1,17 @@
 #pragma once
 #include "Constant.h"
 
-class Ship
+class Ship: public Graph_lib::Image
 {
 private:
-	point p1;
-	point p2;
+	field_point p1;
+	field_point p2;
 public:
-	Ship(point Start, point End);
+	Ship(field_point Start, field_point End);
 
-	point start() const { return p1; }
-	point end() const { return p2; }
+	field_point start() const { return p1; }
+	field_point end() const { return p2; }
+	std::string get_picture(field_point start, field_point end);
 
 	int length(int x1, int x2)
 	{

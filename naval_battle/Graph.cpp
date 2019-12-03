@@ -105,11 +105,11 @@ namespace Graph_lib {
 		// check that the new line isn't parallel to the previous one
 		if (1 < np)
 		{
-			if (p == point(np - 1))
+			if (p == field_point(np - 1))
 				error("polygon point equal to previous point");
 
 			bool parallel;
-			line_intersect(point(np - 1), p, point(np - 2), point(np - 1), parallel);
+			line_intersect(field_point(np - 1), p, field_point(np - 2), field_point(np - 1), parallel);
 
 			if (parallel)
 				error("two polygon points lie in a straight line");
@@ -119,7 +119,7 @@ namespace Graph_lib {
 		for (int i = 1; i < np - 1; ++i)
 		{
 			Point ignore{ 0, 0 };
-			if (line_segment_intersect(point(np - 1), p, point(i - 1), point(i), ignore))
+			if (line_segment_intersect(field_point(np - 1), p, field_point(i - 1), field_point(i), ignore))
 				error("intersect in polygon");
 		}
 
@@ -143,7 +143,7 @@ namespace Graph_lib {
 			fl_begin_complex_polygon();
 			for (int i = 0; i < number_of_points(); ++i)
 			{
-				fl_vertex(point(i).x, point(i).y);
+				fl_vertex(field_point(i).x, field_point(i).y);
 			}
 			fl_end_complex_polygon();
 			fl_color(color().as_int());  // reset color
@@ -159,7 +159,7 @@ namespace Graph_lib {
 		Open_polyline::draw_lines();
 
 		if (color().visibility())  // draw closing line
-			fl_line(point(number_of_points() - 1).x, point(number_of_points() - 1).y, point(0).x, point(0).y);
+			fl_line(field_point(number_of_points() - 1).x, field_point(number_of_points() - 1).y, field_point(0).x, field_point(0).y);
 	}
 
 
@@ -177,7 +177,7 @@ namespace Graph_lib {
 	{
 		if (color().visibility())
 			for (int i = 1; i < number_of_points(); i += 2)
-				fl_line(point(i - 1).x, point(i - 1).y, point(i).x, point(i).y);
+				fl_line(field_point(i - 1).x, field_point(i - 1).y, field_point(i).x, field_point(i).y);
 	}
 
 
@@ -186,7 +186,7 @@ namespace Graph_lib {
 		int ofnt = fl_font();
 		int osz = fl_size();
 		fl_font(fnt.as_int(), fnt_sz);
-		fl_draw(lab.c_str(), point(0).x, point(0).y);
+		fl_draw(lab.c_str(), field_point(0).x, field_point(0).y);
 		fl_font(ofnt, osz);
 	}
 
@@ -212,12 +212,12 @@ namespace Graph_lib {
 		if (fill_color().visibility())  // fill
 		{
 			fl_color(fill_color().as_int());
-			fl_rectf(point(0).x, point(0).y, w, h);
+			fl_rectf(field_point(0).x, field_point(0).y, w, h);
 			fl_color(color().as_int());  // reset color
 		}
 
 		if (color().visibility())  // edge on top of fill
-			fl_rect(point(0).x, point(0).y, w, h);
+			fl_rect(field_point(0).x, field_point(0).y, w, h);
 	}
 
 
@@ -296,12 +296,12 @@ namespace Graph_lib {
 		if (fill_color().visibility())  // fill
 		{
 			fl_color(fill_color().as_int());
-			fl_pie(point(0).x, point(0).y, r + r - 1, r + r - 1, 0, 360);
+			fl_pie(field_point(0).x, field_point(0).y, r + r - 1, r + r - 1, 0, 360);
 			fl_color(color().as_int());  // reset color
 		}
 
 		if (color().visibility())
-			fl_arc(point(0).x, point(0).y, r + r, r + r, 0, 360);
+			fl_arc(field_point(0).x, field_point(0).y, r + r, r + r, 0, 360);
 	}
 
 
@@ -310,12 +310,12 @@ namespace Graph_lib {
 		if (fill_color().visibility())  // fill
 		{
 			fl_color(fill_color().as_int());
-			fl_pie(point(0).x, point(0).y, w + w - 1, h + h - 1, 0, 360);
+			fl_pie(field_point(0).x, field_point(0).y, w + w - 1, h + h - 1, 0, 360);
 			fl_color(color().as_int());  // reset color
 		}
 
 		if (color().visibility())
-			fl_arc(point(0).x, point(0).y, w + w, h + h, 0, 360);
+			fl_arc(field_point(0).x, field_point(0).y, w + w, h + h, 0, 360);
 	}
 
 	Point Ellipse::focus1() const
@@ -365,7 +365,7 @@ namespace Graph_lib {
 	{
 		Open_polyline::draw_lines();
 		for (int i = 0; i < number_of_points(); ++i)
-			draw_mark(point(i), mark[i % mark.size()]);
+			draw_mark(field_point(i), mark[i % mark.size()]);
 	}
 
 
@@ -441,9 +441,9 @@ namespace Graph_lib {
 		if (fn.label() != "") fn.draw_lines();
 
 		if (w && h)
-			p->draw(point(0).x, point(0).y, w, h, cx, cy);
+			p->draw(field_point(0).x, field_point(0).y, w, h, cx, cy);
 		else
-			p->draw(point(0).x, point(0).y);
+			p->draw(field_point(0).x, field_point(0).y);
 	}
 
 } // of namespace Graph_lib

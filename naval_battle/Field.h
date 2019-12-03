@@ -1,17 +1,17 @@
 #pragma once
-#include "FieldChunck.h"
+#include "MyWindow.h"
 
-class Field : MyWindow
+class Field : public MyWindow
 {
 public:
 	Field(Graph_lib::Point p, int size, const std::string& title);
 
 	void hide() {}
-	void draw() {}
 
-	void clicked();
+	void clicked(Graph_lib::Address widget);
 private:
-	std::vector<std::vector<FieldChunck*>> field;
+	std::vector<std::vector<Graph_lib::Button*>> fieldB;
+	std::vector<std::vector<Graph_lib::Rectangle*>> fieldR;
 	int squareLenght = cell_size;
 	int startX;
 	int startY;

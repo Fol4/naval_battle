@@ -156,8 +156,8 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Constant.cpp" />
     <ClCompile Include="Field.cpp" />
-    <ClCompile Include="FieldChunck.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />

@@ -8,3 +8,8 @@ FieldChunck::FieldChunck(Graph_lib::Point p, Graph_lib::Callback cb, int size):
 	Graph_lib::Rectangle(p, size, size)
 {
 }
+
+void FieldChunck::attach(Graph_lib::Window& win)
+{
+	Button::attach(win);
+}

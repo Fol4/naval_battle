@@ -1,22 +1,19 @@
 #include "MyWindow.h"
 
-using namespace std;
-using namespace Graph_lib;
-
-MyWindow::MyWindow(Point p, int w, int h, const std::string& title) :
-	Graph_lib::Window{ p, w, h, title  },
-	quit_button{ Point{x_max() - 100, 10}, 70, 20, "Quit",
-	[](Address, Address pw) {
-							 reference_to<MyWindow>(pw).next();
+MyWindow::MyWindow(Graph_lib::Point p, int w, int h, const std::string& title) :
+	Window{ p, w, h, title  },
+	quit_button{ Graph_lib::Point{x_max() - 100, 10}, 70, 20, "Quit",
+	[](Graph_lib::Address, Graph_lib::Address pw) {
+							 Graph_lib::reference_to<MyWindow>(pw).quit();
 							 }
 				},
-	next_button{ Point{420, 10}, 70, 20, "Next",
-	[](Address , Address pw) {
-							  reference_to<MyWindow>(pw).quit();
+	next_button{ Graph_lib::Point{420, 10}, 70, 20, "Next",
+	[](Graph_lib::Address , Graph_lib::Address pw) {
+							  Graph_lib::reference_to<MyWindow>(pw).next();
 							  }
 				},
-	start{ Point {100, 10}, 100, 20, "Ship Start" },
-	end{ Point { 300, 10}, 100, 20, "Ship End" }
+	start{ Graph_lib::Point {100, 10}, 100, 20, "Ship Start" },
+	end{ Graph_lib::Point { 300, 10}, 100, 20, "Ship End" }
 
 {
 	attach(quit_button);
@@ -25,35 +22,22 @@ MyWindow::MyWindow(Point p, int w, int h, const std::string& title) :
 	attach(end);
 }
 
-point string_to_point(const string& s)
-{
-	int y { s[s.length] };
-	string strX = "";
-
-	for (const auto& c : s)
-		if (c == ':')
-			break;
-		else
-			strX += c;
-
-	int x = atoi(strX.c_str());
-
-	return { x,y };
-}
-
 void MyWindow::next()
 {
-	string StartCord = start.get_string();
-	string EndCord = end.get_string();
+	std::string StartCord = start.get_string();
+	std::string EndCord = end.get_string();
 
-	point Start = string_to_point(StartCord);
-	point End = string_to_point(EndCord);
+	field_point Start = string_to_point(StartCord);
+	field_point End = string_to_point(EndCord);
 
-	Ship(Start, End);
-	
-	for (int i = Start.x - 1; i < End.x; ++i)
-		for (int j = Start.y - 1; j < Start.y; ++j)
+	ship.push_back(new Ship(Start, End)); 
+	attach(*ship[ship.size()-1]); 
+
+	for (int i = Start.first - 1; i < End.first; ++i)
+		for (int j = Start.second - 1; j < End.second; ++j)
 			position[i][j] = 1;
+
+	redraw();
 }
 
 
