@@ -31,8 +31,8 @@ void MyWindow::next()
 	field_point End = string_to_point(EndCord);
 
 	ship.push_back(new Ship(Start, End)); 
-	attach(*ship[ship.size() - 1]);
-	ship_postition.push_back(Start);
+		attach(*ship[ship.size()-1]); 
+	ship_position.push_back(Start);
 	add_position(Start, End);
 
 	redraw();
