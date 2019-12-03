@@ -35,6 +35,9 @@ void Field::clicked(Graph_lib::Address widget)
 	int x = (w.x() - start_x) / cell_size;
 	int y = (w.y() - start_y) / cell_size;
 
-	/*if(MyWindow::position[x][y] == 1)*/
+	if (is_ship({ x,y }))
+	{
+		change_status({ x,y });
 		
+	}
 }

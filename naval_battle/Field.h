@@ -6,8 +6,6 @@ class Field : public MyWindow
 public:
 	Field(Graph_lib::Point p, int size, const std::string& title);
 
-	void hide() {}
-
 	void clicked(Graph_lib::Address widget);
 private:
 	std::vector<std::vector<Graph_lib::Button*>> fieldB;

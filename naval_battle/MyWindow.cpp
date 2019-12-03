@@ -31,14 +31,83 @@ void MyWindow::next()
 	field_point End = string_to_point(EndCord);
 
 	ship.push_back(new Ship(Start, End)); 
-	attach(*ship[ship.size()-1]); 
-
-	for (int i = Start.first - 1; i < End.first; ++i)
-		for (int j = Start.second - 1; j < End.second; ++j)
-			position[i][j] = 1;
+	attach(*ship[ship.size() - 1]);
+	ship_postition.push_back(Start);
+	add_position(Start, End);
 
 	redraw();
 }
 
-
-
+void MyWindow::add_position(field_point p1, field_point p2)
+{
+	if (p1.first == p2.first)
+	{
+		if (position[p1.first][p1.second] != 0)
+			throw std::runtime_error("Wrong postition");
+		else
+		{
+			if (p1.first != 0)
+				if (position[p1.first - 1][p1.second] != 0)
+					throw std::runtime_error("Wrong postition");
+			if (p1.first != 9)
+				if (position[p1.first + 1][p1.second] != 0)
+					throw std::runtime_error("Wrong postition");
+			if (p1.second != 0)
+				if (position[p1.first][p1.second - 1] != 0)
+					throw std::runtime_error("Wrong postition");
+		}
+		for (int i = p1.second; i <= p2.second; ++i)
+		{
+			if (i != 9)
+			{
+				if (p1.first != 0)
+					if (position[p1.first - 1][i + 1] != 0)
+						throw std::runtime_error("Wrong postition");
+				if (p1.first != 9)
+					if (position[p1.first + 1][i + 1] != 0)
+						throw std::runtime_error("Wrong postition");
+				if (position[p1.first][i + 1] != 0)
+					throw std::runtime_error("Wrong postition");
+			}
+			position[p1.first][i] = 1;
+		}
+	}
+	if (p1.second == p2.second)
+	{
+		if (position[p1.first][p1.second] != 0)
+			throw std::runtime_error("Wrong postition");
+		else
+		{
+			if (p1.second != 0)
+				if (position[p1.first][p1.second - 1] != 0)
+					throw std::runtime_error("Wrong postition");
+			if (p1.second != 9)
+				if (position[p1.first][p1.second + 1] != 0)
+					throw std::runtime_error("Wrong postition");
+			if (p1.first != 0)
+				if (position[p1.first - 1][p1.second] != 0)
+					throw std::runtime_error("Wrong postition");
+		}
+		for (int i = p1.first; i <= p2.first; ++i)
+		{
+			if (i != 9)
+			{
+				if (p1.second != 0)
+					if (position[i + 1][p1.second - 1] != 0)
+						throw std::runtime_error("Wrong postition");
+				if (p1.second != 9)
+					if (position[i + 1][p1.second + 1] != 0)
+						throw std::runtime_error("Wrong postition");
+				if (position[i + 1][p1.second] != 0)
+					throw std::runtime_error("Wrong postition");
+			}
+			position[i][p1.second] = 1;
+		}
+	}
+	for (int i = 0; i < 10; ++i)
+	{
+		for (int j = 0; j < 10; ++j)
+			std::cout << position[j][i] << " ";
+		std::cout << std::endl;
+	}
+}

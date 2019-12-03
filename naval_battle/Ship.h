@@ -17,6 +17,5 @@ public:
 	{
 		return abs(int((x1 - x2) / cell_size));
 	}
-
 };
 

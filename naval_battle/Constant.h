@@ -5,6 +5,7 @@
 #include <string.h>
 #include <exception>
 #include <cmath>
+#include <map>
 #include "Graph.h"
 #include "Simple_window.h"
 
