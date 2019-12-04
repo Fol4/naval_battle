@@ -1,22 +1,22 @@
 #include "Field.h"
 
-using namespace std;
-using namespace Graph_lib;
 
 int main()
 try
 {
 	Field f({ 0,0 }, 1920, 1080, "field");
 
-	return gui_main();
+	f.draw_minifield();
+
+	return Graph_lib::gui_main();
 }
 catch (std::exception & e)
 {
-	cerr << e.what() << endl;
+	std::cerr << e.what() << std::endl;
 	return 1;
 }
 catch (...)
 {
-	cerr << "Oops, something went wrong..." << endl;
+	std::cerr << "Oops, something went wrong..." << std::endl;
 	return 2;
 }

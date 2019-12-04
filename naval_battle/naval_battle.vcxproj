@@ -150,6 +150,7 @@
     <ClInclude Include="fltk.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="miniField.h" />
     <ClInclude Include="MyWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Ship.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="miniField.cpp" />
     <ClCompile Include="MyWindow.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Window.cpp" />

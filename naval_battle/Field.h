@@ -1,5 +1,5 @@
 #pragma once
-#include "MyWindow.h"
+#include "miniField.h"
 
 class Field : public MyWindow
 {
@@ -10,12 +10,16 @@ public:
 	void destroy_ship();
 	void surround(field_point p1, field_point p2);
 	int get_squareLenght() { return squareLenght; }
+	void draw_minifield();
 private:
 	std::vector<std::vector<Graph_lib::Button*>> fieldB;
 	std::vector<std::vector<Graph_lib::Rectangle*>> fieldR;
 	int squareLenght;
 	int startX;
 	int startY;
+	int width;
+	int height;
+	miniField mf;
 };
 
 

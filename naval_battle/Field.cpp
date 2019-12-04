@@ -1,9 +1,11 @@
 #include "Field.h"
 
-Field::Field(Graph_lib::Point p, int w, int h, const std::string& title):
-	MyWindow{ p, w, h, cell_size * w / 1500, w/15, h/5, title },
-	startX { w/15 }, startY { h/5 },
-	squareLenght{ cell_size*w/1500 }
+Field::Field(Graph_lib::Point p, int w, int h, const std::string& title) :
+	MyWindow{ p, w, h, cell_size * w / 1500, w / 15, h / 5, title },
+	startX{ w / 15 }, startY{ h / 5 },
+	squareLenght{ cell_size * w / 1500 },
+	width{ w }, height{ h },
+	mf{ {w / 15, 9*(h+400)/10}, 5*cell_size/8, ship }
 {
 	for (int i = 0; i < 10; ++i)
 	{
@@ -231,4 +233,13 @@ void Field::surround(field_point p1, field_point p2)
 			attach(*cross[cross.size() - 1]);
 		}
 	}
+}
+
+void Field::draw_minifield()
+{
+	for (int i = 0; i < 10; ++i)
+		for (int j = 0; j < 10; ++j)
+			attach(*mf.minifield[i][j]);
+	for (int i = 0; i < mf.miniship.size(); ++i)
+		attach(*mf.miniship[i]);
 }

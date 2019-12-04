@@ -208,10 +208,4 @@ void MyWindow::add_position(field_point p1, field_point p2)
 		}
 		ship_count[abs(p1.first - p2.first) + 1]--;
 	}
-	for (int i = 0; i < 10; ++i)
-	{
-		for (int j = 0; j < 10; ++j)
-			std::cout << position[i][j] << " ";
-		std::cout << std::endl;
-	}
 }
