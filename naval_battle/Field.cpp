@@ -1,9 +1,9 @@
 #include "Field.h"
 
-Field::Field(Graph_lib::Point p, int size, const std::string& title):
-	MyWindow{ p, 1200, 1080, title },
-	startX { p.x }, startY { p.y },
-	squareLenght{ size }
+Field::Field(Graph_lib::Point p, int w, int h, const std::string& title):
+	MyWindow{ p, w, h, cell_size * w / 1500, w/15, h/5, title },
+	startX { w/15 }, startY { h/5 },
+	squareLenght{ cell_size*w/1500 }
 {
 	for (int i = 0; i < 10; ++i)
 	{
@@ -12,7 +12,7 @@ Field::Field(Graph_lib::Point p, int size, const std::string& title):
 		for (int j = 0; j < 10; ++j)
 		{
 			fieldB[i].push_back(new Graph_lib::Button({ startY + i * squareLenght,
-				startX + j * squareLenght }, cell_size, cell_size, "",
+				startX + j * squareLenght }, squareLenght, squareLenght, "",
 				[](Graph_lib::Address widget, Graph_lib::Address pw)
 			{
 					Graph_lib::reference_to<Field>(pw).clicked(widget);
@@ -21,7 +21,7 @@ Field::Field(Graph_lib::Point p, int size, const std::string& title):
 			attach(*fieldB[i][j]);
 
 			fieldR[i].push_back(new Graph_lib::Rectangle({ startY + i * squareLenght,
-				startX + j * squareLenght }, cell_size, cell_size));
+				startX + j * squareLenght }, squareLenght, squareLenght));
 			fieldR[i][j]->set_fill_color(Graph_lib::Color::blue);
 			fieldR[i][j]->set_color(Graph_lib::Color::black);
 			attach(*fieldR[i][j]);
@@ -33,22 +33,28 @@ void Field::clicked(Graph_lib::Address widget)
 {
 	Fl_Widget& w = Graph_lib::reference_to<Fl_Widget>(widget);
 
-	int x = (w.x() - start_x) / cell_size;
-	int y = (w.y() - start_y) / cell_size;
+	int x = (w.x() - startY) / squareLenght;
+	int y = (w.y() - startX) / squareLenght;
 
 	if (position[x][y] == 1)
 	{
 		position[x][y] = 2;
-		fire.push_back(new Graph_lib::Rectangle({ w.x(), w.y() }, cell_size, cell_size));
+		fire.push_back(new Graph_lib::Image({ w.x(), w.y() }, 
+			"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\explosion.gif"));
 		fire_cord.push_back({ x,y });
-		fire[fire.size() - 1]->set_fill_color(Graph_lib::Color::red);
 		attach(*fire[fire.size() - 1]);
+	}
+	else if (position[x][y] == 0)
+	{
+		position[x][y] = 2;
+		cross.push_back(new Graph_lib::Image({ w.x(), w.y() },
+			"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+		attach(*cross[cross.size() - 1]);
 	}
 
 	fieldB[y][x]->hide();
 
 	destroy_ship();
-
 }
 
 void Field::destroy_ship()
@@ -63,20 +69,18 @@ void Field::destroy_ship()
 		{
 			if (ship[i]->start() == ship[i]->end())
 			{
-				detach(*ship[i]);
-				ship_position[i] = { -1,-1 };
+				surround(ship[i]->start(), ship[i]->end());
+				ship_position[i] = { -1, -1 };
 				break;
 			}
 			int s = 0;
 			int k = 0;
-			std::vector<field_point> now;
 
 			if (position[x][y] + position[x + 1][y] > 3)
 				for (int j = x; j <= ship[i]->end().first; ++j)
 				{
 					if (position[j][y] == 2)
 						s++;
-					now.push_back({ j,y });
 					k++;
 				}
 			else if (position[x][y] + position[x][y + 1] > 3)
@@ -84,13 +88,12 @@ void Field::destroy_ship()
 				{
 					if (position[x][j] == 2)
 						s++;
-					now.push_back({ x,j });
 					++k;
 				}
 
 			if (s == k and s != 0)
 			{
-				detach(*ship[i]);
+				surround(ship[i]->start(), ship[i]->end());
 				ship_position[i] = {-1, -1};
 				break;
 			}
@@ -99,4 +102,133 @@ void Field::destroy_ship()
 	}
 
 	redraw();
+}
+
+void Field::surround(field_point p1, field_point p2)
+{
+	
+	if (p1.first == p2.first)
+	{
+		if (p1.first != 0)
+		{
+			cross.push_back(new Graph_lib::Image({ (p1.first - 1)*squareLenght + startY,
+				p1.second*squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		if (p1.first != 9)
+		{
+			cross.push_back(new Graph_lib::Image({ (p1.first + 1) * squareLenght + startY, 
+				p1.second* squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		if (p1.second != 0)
+		{
+			cross.push_back(new Graph_lib::Image({ p1.first * squareLenght + startY, 
+				(p1.second - 1)* squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		if (p1.second != 0 and p1.first != 0)
+		{
+			cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
+				(p1.second - 1) * squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		if (p1.second != 0 and p1.first != 9)
+		{
+			cross.push_back(new Graph_lib::Image({ (p1.first + 1) * squareLenght + startY,
+				(p1.second - 1) * squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		for (int i = p1.second; i <= p2.second; ++i)
+		{
+			if (p1.first != 0)
+			{
+				cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
+					(i+1)* squareLenght + startX },
+					"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				attach(*cross[cross.size() - 1]);
+			}
+			if (p1.first != 9)
+			{
+				cross.push_back(new Graph_lib::Image({ (p1.first + 1) * squareLenght + startY,
+					(i+1)* squareLenght + startX },
+					"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				attach(*cross[cross.size() - 1]);
+			}
+		}
+		if (p2.second != 9)
+		{
+			cross.push_back(new Graph_lib::Image({ (p1.first) * squareLenght + startY, 
+				(p2.second + 1)* squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+	}
+	else if (p1.second == p2.second)
+	{
+		if (p1.second != 0)
+		{
+			cross.push_back(new Graph_lib::Image({ p1.first * squareLenght + startY, 
+				(p1.second - 1)* squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		if (p1.second != 9)
+		{
+			cross.push_back(new Graph_lib::Image({ p1.first * squareLenght + startY,
+				(p1.second + 1)* squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		if (p1.first != 0)
+		{
+			cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
+				(p1.second)* squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		if (p1.second != 0 and p1.first != 0)
+		{
+			cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
+				(p1.second - 1) * squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		if (p1.second != 9 and p1.first != 0)
+		{
+			cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
+				(p1.second + 1) * squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+		for (int i = p1.first; i <= p2.first; ++i)
+		{
+			if (p1.second != 0)
+			{
+				cross.push_back(new Graph_lib::Image({ (i+1) * squareLenght + startY,
+					(p1.second - 1)* squareLenght + startX },
+					"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				attach(*cross[cross.size() - 1]);
+			}
+			if (p1.second != 9)
+			{
+				cross.push_back(new Graph_lib::Image({ (i+1)*squareLenght + startY, 
+					(p1.second + 1)* squareLenght + startX },
+					"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				attach(*cross[cross.size() - 1]);
+			}
+		}
+		if (p2.first != 9)
+		{
+			cross.push_back(new Graph_lib::Image({ (p1.first + 1) * squareLenght + startY,
+				p1.second* squareLenght + startX },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+		}
+	}
 }

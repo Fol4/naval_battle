@@ -2,8 +2,8 @@
 #include "Ship.h"
 struct MyWindow : Graph_lib::Window
 {
-	MyWindow(Graph_lib::Point p, int w, int h,
-		const std::string& title);
+	MyWindow(Graph_lib::Point p, int w, int h, int size, 
+		int start_x, int start_y, const std::string& title);
 	MyWindow(Graph_lib::Point p, int w, int h);
 
 	void add_position(field_point p1, field_point p2);
@@ -14,8 +14,9 @@ protected:
 	std::vector<field_point> ship_position;
 	std::map<int, int> ship_count = { {1,4}, {2,3}, {3,2}, {4,1} };
 
-	std::vector<Graph_lib::Rectangle*> fire;
+	std::vector<Graph_lib::Image*> fire;
 	std::vector<field_point> fire_cord;
+	std::vector<Graph_lib::Image*> cross;
 
 	std::vector<std::vector<int>> position =
 		matrix_2d<int>(10, 10, 0);
@@ -30,6 +31,9 @@ private:
 	Graph_lib::In_box end;
 	Graph_lib::In_box folder;
 
+	int squareLenght;
+	int startX;
+	int startY;
 	std::string mode;
 	std::string folder_path;
 

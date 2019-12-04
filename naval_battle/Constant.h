@@ -31,5 +31,3 @@ std::vector<std::vector<T>> matrix_2d(int h, int l, T fill = 0)
 } 
 
 constexpr int cell_size{ 70 };
-constexpr int start_x = 100;
-constexpr int start_y = 100;

@@ -4,14 +4,16 @@
 class Field : public MyWindow
 {
 public:
-	Field(Graph_lib::Point p, int size, const std::string& title);
+	Field(Graph_lib::Point p, int w, int h, const std::string& title);
 
 	void clicked(Graph_lib::Address widget);
 	void destroy_ship();
+	void surround(field_point p1, field_point p2);
+	int get_squareLenght() { return squareLenght; }
 private:
 	std::vector<std::vector<Graph_lib::Button*>> fieldB;
 	std::vector<std::vector<Graph_lib::Rectangle*>> fieldR;
-	int squareLenght = cell_size;
+	int squareLenght;
 	int startX;
 	int startY;
 };

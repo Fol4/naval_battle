@@ -1,6 +1,6 @@
 #include "MyWindow.h"
 
-MyWindow::MyWindow(Graph_lib::Point p, int w, int h, const std::string& title) :
+MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int start_y, const std::string& title) :
 	Window{ p, w, h, title  },
 	quit_button{new Graph_lib::Button( Graph_lib::Point{x_max() - 100, 10}, 70, 20, "Quit",
 	[](Graph_lib::Address, Graph_lib::Address pw) {
@@ -15,7 +15,9 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h, const std::string& title) :
 
 	start{Graph_lib::Point {100, 10}, 100, 20, "Ship Start" },
 	end{Graph_lib::Point { 300, 10}, 100, 20, "Ship End" },
-	folder{Graph_lib::Point{w / 10, 3 * h / 4}, 3 * w / 4, w / 20, "Path"}
+	folder{Graph_lib::Point{w / 10, 3 * h / 4}, 3 * w / 4, w / 20, "Path"},
+	squareLenght{size},
+	startX{start_x}, startY{start_y}
 {
 	attach(*quit_button);
 	attach(*next_button);
@@ -76,7 +78,7 @@ void MyWindow::next()
 	field_point End = string_to_point(EndCord);
 
 	add_position(Start, End);
-	ship.push_back(new Ship(Start, End)); 
+	ship.push_back(new Ship(Start, End, squareLenght, startX, startY));
 	attach(*ship[ship.size()-1]); 
 	ship_position.push_back(Start);
 
@@ -141,6 +143,12 @@ void MyWindow::add_position(field_point p1, field_point p2)
 			if (p1.second != 0)
 				if (position[p1.first][p1.second - 1] != 0)
 					throw std::runtime_error("Wrong postition");
+			if(p1.second != 0 and p1.first != 0)
+				if (position[p1.first - 1][p1.second - 1] != 0)
+					throw std::runtime_error("Wrong postition");
+			if (p1.second != 0 and p1.first != 9)
+				if (position[p1.first + 1][p1.second - 1] != 0)
+					throw std::runtime_error("Wrong postition");
 		}
 		for (int i = p1.second; i <= p2.second; ++i)
 		{
@@ -176,6 +184,12 @@ void MyWindow::add_position(field_point p1, field_point p2)
 			if (p1.first != 0)
 				if (position[p1.first - 1][p1.second] != 0)
 					throw std::runtime_error("Wrong postition");
+			if (p1.second != 0 and p1.first != 0)
+				if (position[p1.first - 1][p1.second - 1] != 0)
+					throw std::runtime_error("Wrong postition");
+			if (p1.second != 9 and p1.first != 0)
+				if (position[p1.first - 1][p1.second + 1] != 0)
+					throw std::runtime_error("Wrong postition");
 		}
 		for (int i = p1.first; i <= p2.first; ++i)
 		{
@@ -193,5 +207,11 @@ void MyWindow::add_position(field_point p1, field_point p2)
 			position[i][p1.second] = 1;
 		}
 		ship_count[abs(p1.first - p2.first) + 1]--;
+	}
+	for (int i = 0; i < 10; ++i)
+	{
+		for (int j = 0; j < 10; ++j)
+			std::cout << position[i][j] << " ";
+		std::cout << std::endl;
 	}
 }

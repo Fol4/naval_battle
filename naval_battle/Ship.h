@@ -7,7 +7,8 @@ private:
 	field_point p1;
 	field_point p2;
 public:
-	Ship(field_point Start, field_point End);
+	Ship(field_point Start, field_point End, int size,
+		int start_x, int start_y );
 
 	field_point start() const { return p1; }
 	field_point end() const { return p2; }
