@@ -6,7 +6,7 @@ using namespace Graph_lib;
 int main()
 try
 {
-	Field f{ {start_x,start_y}, cell_size, "Field" };
+	MyWindow win(Point{ 100, 100 }, 800, 800);
 
 	return gui_main();
 }

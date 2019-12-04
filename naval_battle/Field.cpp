@@ -65,12 +65,6 @@ void Field::destroy_ship()
 			{
 				detach(*ship[i]);
 				ship_position[i] = { -1,-1 };
-
-				int i_fire = 0;
-				while (fire_cord[i_fire] != ship_position[i])
-					++i_fire;
-				detach(*fire[i_fire]);
-				fire_cord[i_fire] = { -1,-1 };
 				break;
 			}
 			int s = 0;
@@ -98,21 +92,6 @@ void Field::destroy_ship()
 			{
 				detach(*ship[i]);
 				ship_position[i] = {-1, -1};
-
-				int i_fire = 0;
-				while (now.size() != 0)
-				{
-					if (fire_cord[i_fire].first != -1 and fire_cord[i_fire].second != -1)
-						for (int l = 0; l < now.size(); ++l)
-							if (fire_cord[i_fire] == now[l])
-							{
-								detach(*(fire[i_fire]));
-								fire_cord[i_fire] = { -1,-1 };
-								now.erase(now);
-								break;
-							}
-					++i_fire;
-				}
 				break;
 			}
 

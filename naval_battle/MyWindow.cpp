@@ -2,24 +2,69 @@
 
 MyWindow::MyWindow(Graph_lib::Point p, int w, int h, const std::string& title) :
 	Window{ p, w, h, title  },
-	quit_button{ Graph_lib::Point{x_max() - 100, 10}, 70, 20, "Quit",
+	quit_button{new Graph_lib::Button( Graph_lib::Point{x_max() - 100, 10}, 70, 20, "Quit",
 	[](Graph_lib::Address, Graph_lib::Address pw) {
 							 Graph_lib::reference_to<MyWindow>(pw).quit();
 							 }
-				},
-	next_button{ Graph_lib::Point{420, 10}, 70, 20, "Next",
+				)},
+	next_button{new Graph_lib::Button( Graph_lib::Point{420, 10}, 70, 20, "Next",
 	[](Graph_lib::Address , Graph_lib::Address pw) {
 							  Graph_lib::reference_to<MyWindow>(pw).next();
 							  }
-				},
-	start{ Graph_lib::Point {100, 10}, 100, 20, "Ship Start" },
-	end{ Graph_lib::Point { 300, 10}, 100, 20, "Ship End" }
+				)},
 
+	start{Graph_lib::Point {100, 10}, 100, 20, "Ship Start" },
+	end{Graph_lib::Point { 300, 10}, 100, 20, "Ship End" },
+	folder{Graph_lib::Point{w / 10, 3 * h / 4}, 3 * w / 4, w / 20, "Path"}
 {
-	attach(quit_button);
-	attach(next_button);
+	attach(*quit_button);
+	attach(*next_button);
 	attach(start);
 	attach(end);
+}
+
+MyWindow::MyWindow(Graph_lib::Point p, int w, int h):
+	Window{p, w, h, "Menu"},
+	quit_button{new Graph_lib::Button(Graph_lib::Point{6*w/7, h/30}, w/9, w/30,
+		"Quit",
+	[](Graph_lib::Address, Graph_lib::Address pw) {
+							 Graph_lib::reference_to<MyWindow>(pw).quit();
+							 }
+				)},
+	pvp_button{new Graph_lib::Button( Graph_lib::Point{w/8, 2*h/7}, 3*w/4, h/20,
+		"Player VS Player",
+	[](Graph_lib::Address , Graph_lib::Address pw) {
+						  Graph_lib::reference_to<MyWindow>(pw).pvp();
+						  }
+				)},
+	pve_button{new Graph_lib::Button( Graph_lib::Point{w/8, 3*h/7}, 3*w/4, h/20,
+		"Player VS Environment",
+	[](Graph_lib::Address , Graph_lib::Address pw) {
+					   Graph_lib::reference_to<MyWindow>(pw).pve();
+					   }
+				)},
+	help_button{new Graph_lib::Button(Graph_lib::Point{w / 8, 4 * h / 7}, 3 * w / 4, h / 20,
+		"Rules",
+	[](Graph_lib::Address , Graph_lib::Address pw) {
+					   Graph_lib::reference_to<MyWindow>(pw).help();
+					   }
+				) },
+	input_button{new Graph_lib::Button(Graph_lib::Point{6*w/7, 3*h/4}, w/9, w/30,
+					   "Input",
+	[](Graph_lib::Address, Graph_lib::Address pw){
+						Graph_lib::reference_to<MyWindow>(pw).input();
+											  }
+		)},
+	start{ Graph_lib::Point {100, 10}, 100, 20, "Ship Start" },
+	end{ Graph_lib::Point { 300, 10}, 100, 20, "Ship End" },
+	folder{Graph_lib::Point{w/10, 3*h/4}, 3*w/4, w/30, "Path"}
+{
+	attach(*quit_button);
+	attach(*pvp_button);
+	attach(*pve_button);
+	attach(*help_button);
+	attach(*input_button);
+	attach(folder);
 }
 
 void MyWindow::next()
@@ -36,6 +81,45 @@ void MyWindow::next()
 	ship_position.push_back(Start);
 
 	redraw();
+}
+
+void MyWindow::pvp() 
+{
+	if (is_folder)
+	{
+		mode = "pvp";
+		hide();
+	}
+	else
+		std::cerr << "Need a path";
+}
+
+void MyWindow::pve()
+{
+	if (is_folder)
+	{
+		mode = "pve";
+		hide();
+	}
+	else
+		std::cerr << "Need a path";
+}
+
+void MyWindow::help()
+{
+	if (is_folder)
+	{
+		mode = "help";
+		hide();
+	}
+	else
+		std::cerr << "Need a path";
+}
+
+void MyWindow::input()
+{
+	folder_path = folder.get_string();
+	is_folder = true;
 }
 
 void MyWindow::add_position(field_point p1, field_point p2)
@@ -110,9 +194,4 @@ void MyWindow::add_position(field_point p1, field_point p2)
 		}
 		ship_count[abs(p1.first - p2.first) + 1]--;
 	}
-}
-
-std::string MyWindow::choose_mode()
-{
-
 }
