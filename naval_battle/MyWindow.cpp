@@ -30,10 +30,10 @@ void MyWindow::next()
 	field_point Start = string_to_point(StartCord);
 	field_point End = string_to_point(EndCord);
 
-	ship.push_back(new Ship(Start, End)); 
-		attach(*ship[ship.size()-1]); 
-	ship_position.push_back(Start);
 	add_position(Start, End);
+	ship.push_back(new Ship(Start, End)); 
+	attach(*ship[ship.size()-1]); 
+	ship_position.push_back(Start);
 
 	redraw();
 }
@@ -42,6 +42,8 @@ void MyWindow::add_position(field_point p1, field_point p2)
 {
 	if (p1.first == p2.first)
 	{
+		if (ship_count[abs(p1.second - p2.second) + 1] == 0)
+			throw std::runtime_error("Ship is full");
 		if (position[p1.first][p1.second] != 0)
 			throw std::runtime_error("Wrong postition");
 		else
@@ -71,9 +73,12 @@ void MyWindow::add_position(field_point p1, field_point p2)
 			}
 			position[p1.first][i] = 1;
 		}
+		ship_count[abs(p1.second - p2.second) + 1]--;
 	}
-	if (p1.second == p2.second)
+	else if (p1.second == p2.second)
 	{
+		if (ship_count[abs(p1.first - p2.first) + 1] == 0)
+			throw std::runtime_error("Ship is full");
 		if (position[p1.first][p1.second] != 0)
 			throw std::runtime_error("Wrong postition");
 		else
@@ -103,11 +108,11 @@ void MyWindow::add_position(field_point p1, field_point p2)
 			}
 			position[i][p1.second] = 1;
 		}
+		ship_count[abs(p1.first - p2.first) + 1]--;
 	}
-	for (int i = 0; i < 10; ++i)
-	{
-		for (int j = 0; j < 10; ++j)
-			std::cout << position[j][i] << " ";
-		std::cout << std::endl;
-	}
+}
+
+std::string MyWindow::choose_mode()
+{
+
 }

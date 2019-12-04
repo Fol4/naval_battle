@@ -2,9 +2,10 @@
 #include <iostream>
 #include <sstream>
 #include <cmath>
+#include <algorithm>
+#include <map>
 #include <string.h>
 #include <exception>
-#include <cmath>
 #include "Graph.h"
 #include "Simple_window.h"
 

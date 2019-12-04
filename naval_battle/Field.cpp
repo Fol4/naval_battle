@@ -65,32 +65,54 @@ void Field::destroy_ship()
 			{
 				detach(*ship[i]);
 				ship_position[i] = { -1,-1 };
-				std::cout << 1;
+
+				int i_fire = 0;
+				while (fire_cord[i_fire] != ship_position[i])
+					++i_fire;
+				detach(*fire[i_fire]);
+				fire_cord[i_fire] = { -1,-1 };
 				break;
 			}
 			int s = 0;
 			int k = 0;
+			std::vector<field_point> now;
 
 			if (position[x][y] + position[x + 1][y] > 3)
 				for (int j = x; j <= ship[i]->end().first; ++j)
 				{
 					if (position[j][y] == 2)
 						s++;
+					now.push_back({ j,y });
 					k++;
 				}
-			if (position[x][y] + position[x][y + 1] > 3)
+			else if (position[x][y] + position[x][y + 1] > 3)
 				for (int j = y; j <= ship[i]->end().second; ++j)
 				{
 					if (position[x][j] == 2)
 						s++;
+					now.push_back({ x,j });
 					++k;
 				}
 
 			if (s == k and s != 0)
 			{
 				detach(*ship[i]);
-				std::cout << 1;
 				ship_position[i] = {-1, -1};
+
+				int i_fire = 0;
+				while (now.size() != 0)
+				{
+					if (fire_cord[i_fire].first != -1 and fire_cord[i_fire].second != -1)
+						for (int l = 0; l < now.size(); ++l)
+							if (fire_cord[i_fire] == now[l])
+							{
+								detach(*(fire[i_fire]));
+								fire_cord[i_fire] = { -1,-1 };
+								now.erase(now);
+								break;
+							}
+					++i_fire;
+				}
 				break;
 			}
 

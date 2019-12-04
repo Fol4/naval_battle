@@ -8,10 +8,12 @@ struct MyWindow : public Graph_lib::Window
 		const std::string& title);
 
 	void add_position(field_point p1, field_point p2);
+	std::string choose_mode();
 
 protected:
 	std::vector<Ship*> ship;
 	std::vector<field_point> ship_position;
+	std::map<int, int> ship_count = { {1,4}, {2,3}, {3,2}, {4,1} };
 
 	std::vector<Graph_lib::Rectangle*> fire;
 	std::vector<field_point> fire_cord;
