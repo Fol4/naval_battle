@@ -11,9 +11,10 @@ public:
 	void surround(field_point p1, field_point p2);
 	int get_squareLenght() { return squareLenght; }
 	void draw_minifield();
+	void draw_button();
 private:
 	std::vector<std::vector<Graph_lib::Button*>> fieldB;
-	std::vector<std::vector<Graph_lib::Rectangle*>> fieldR;
+	std::vector<std::vector<Graph_lib::Image*>> fieldR;
 	int squareLenght;
 	int startX;
 	int startY;

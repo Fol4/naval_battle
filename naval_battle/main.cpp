@@ -1,12 +1,10 @@
-#include "Field.h"
+#include "Engine.h"
 
 
 int main()
 try
 {
-	Field f({ 0,0 }, 1920, 1080, "field");
-
-	f.draw_minifield();
+	start();
 
 	return Graph_lib::gui_main();
 }

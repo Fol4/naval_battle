@@ -36,7 +36,6 @@ private:
 	int startY;
 	std::string mode;
 	std::string folder_path;
-
 	bool is_folder = false;
 
 	void quit() { hide(); }

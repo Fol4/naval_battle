@@ -9,28 +9,35 @@ Field::Field(Graph_lib::Point p, int w, int h, const std::string& title) :
 {
 	for (int i = 0; i < 10; ++i)
 	{
-		fieldB.emplace_back();
 		fieldR.emplace_back();
 		for (int j = 0; j < 10; ++j)
 		{
-			fieldB[i].push_back(new Graph_lib::Button({ startY + i * squareLenght,
-				startX + j * squareLenght }, squareLenght, squareLenght, "",
-				[](Graph_lib::Address widget, Graph_lib::Address pw)
-			{
-					Graph_lib::reference_to<Field>(pw).clicked(widget);
-			}
-			));
-			attach(*fieldB[i][j]);
-
-			fieldR[i].push_back(new Graph_lib::Rectangle({ startY + i * squareLenght,
-				startX + j * squareLenght }, squareLenght, squareLenght));
-			fieldR[i][j]->set_fill_color(Graph_lib::Color::blue);
-			fieldR[i][j]->set_color(Graph_lib::Color::black);
+			fieldR[i].push_back(new Graph_lib::Image({ startY + i * squareLenght,
+				startX + j * squareLenght },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\water_texture.jpg"));
 			attach(*fieldR[i][j]);
 		}
 	}
 }
 
+void Field::draw_button()
+{
+	for (int i = 0; i < 10; ++i)
+	{
+		fieldB.emplace_back();
+		for (int j = 0; j < 10; ++j)
+		{
+			fieldB[i].push_back(new Graph_lib::Button({ startY + i * squareLenght,
+				startX + j * squareLenght }, squareLenght, squareLenght, "",
+				[](Graph_lib::Address widget, Graph_lib::Address pw)
+				{
+					Graph_lib::reference_to<Field>(pw).clicked(widget);
+				}
+			));
+			attach(*fieldB[i][j]);
+		}
+	}
+}
 void Field::clicked(Graph_lib::Address widget)
 {
 	Fl_Widget& w = Graph_lib::reference_to<Fl_Widget>(widget);
@@ -42,7 +49,7 @@ void Field::clicked(Graph_lib::Address widget)
 	{
 		position[x][y] = 2;
 		fire.push_back(new Graph_lib::Image({ w.x(), w.y() }, 
-			"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\explosion.gif"));
+			"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\explosion.jpg"));
 		fire_cord.push_back({ x,y });
 		attach(*fire[fire.size() - 1]);
 	}

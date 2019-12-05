@@ -59,7 +59,7 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h):
 		)},
 	start{ Graph_lib::Point {100, 10}, 100, 20, "Ship Start" },
 	end{ Graph_lib::Point { 300, 10}, 100, 20, "Ship End" },
-	folder{Graph_lib::Point{w/10, 3*h/4}, 3*w/4, w/30, "Path"}
+	folder{Graph_lib::Point{w/10, 3*h/4}, 3*w/4, w/30, "Path"}	
 {
 	attach(*quit_button);
 	attach(*pvp_button);
