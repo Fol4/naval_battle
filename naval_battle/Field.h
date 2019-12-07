@@ -10,17 +10,26 @@ public:
 	void destroy_ship();
 	void surround(field_point p1, field_point p2);
 	int get_squareLenght() { return squareLenght; }
-	void draw_minifield();
+	void draw_minifield(miniField* mf);
 	void draw_button();
+	bool ship_destroyed();
+	bool get_first() { return first; }
+	void clear_field();
 private:
+	Graph_lib::Button* next_turn_button;
+
 	std::vector<std::vector<Graph_lib::Button*>> fieldB;
 	std::vector<std::vector<Graph_lib::Image*>> fieldR;
+
 	int squareLenght;
 	int startX;
 	int startY;
 	int width;
 	int height;
-	miniField mf;
+	bool first = true;
+	bool turn_down = false;
+
+	void next_turn();
 };
 
 

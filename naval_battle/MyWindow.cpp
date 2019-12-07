@@ -2,19 +2,18 @@
 
 MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int start_y, const std::string& title) :
 	Window{ p, w, h, title  },
-	quit_button{new Graph_lib::Button( Graph_lib::Point{x_max() - 100, 10}, 70, 20, "Quit",
+	quit_button{new Graph_lib::Button( Graph_lib::Point{x_max() - w/15, h/100}, w/20, h/50, "Quit",
 	[](Graph_lib::Address, Graph_lib::Address pw) {
 							 Graph_lib::reference_to<MyWindow>(pw).quit();
 							 }
 				)},
-	next_button{new Graph_lib::Button( Graph_lib::Point{420, 10}, 70, 20, "Next",
+	next_button{new Graph_lib::Button( Graph_lib::Point{w/5, h/100}, w/20, h/50, "Next",
 	[](Graph_lib::Address , Graph_lib::Address pw) {
 							  Graph_lib::reference_to<MyWindow>(pw).next();
 							  }
 				)},
-
-	start{Graph_lib::Point {100, 10}, 100, 20, "Ship Start" },
-	end{Graph_lib::Point { 300, 10}, 100, 20, "Ship End" },
+	start{Graph_lib::Point {w/20, h/100}, 100, h/50, "Ship Start" },
+	end{Graph_lib::Point { w/7, h/100}, 100, h/50, "Ship End" },
 	folder{Graph_lib::Point{w / 10, 3 * h / 4}, 3 * w / 4, w / 20, "Path"},
 	squareLenght{size},
 	startX{start_x}, startY{start_y}
@@ -81,7 +80,7 @@ void MyWindow::next()
 	ship.push_back(new Ship(Start, End, squareLenght, startX, startY));
 	attach(*ship[ship.size()-1]); 
 	ship_position.push_back(Start);
-
+		
 	redraw();
 }
 
@@ -208,4 +207,12 @@ void MyWindow::add_position(field_point p1, field_point p2)
 		}
 		ship_count[abs(p1.first - p2.first) + 1]--;
 	}
+}
+
+bool MyWindow::is_full()
+{
+	for (auto [a, b] : ship_count)
+		if (b != 0)
+			return false;
+	return true;
 }
