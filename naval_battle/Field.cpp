@@ -300,15 +300,6 @@ void Field::surround(field_point p1, field_point p2)
 	}
 }
 
-void Field::draw_minifield(miniField* mf)
-{
-	for (int i = 0; i < 10; ++i)
-		for (int j = 0; j < 10; ++j)
-			attach(*mf->minifield[i][j]);
-	for (int i = 0; i < mf->miniship.size(); ++i)
-		attach(*mf->miniship[i]);
-}
-
 bool Field::ship_destroyed()
 {
 	for (int i = 0; i < ship_position.size(); ++i)

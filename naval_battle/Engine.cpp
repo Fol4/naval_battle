@@ -14,7 +14,6 @@ void start()
 	{
 		bool second = false;
 		Field player1{ {0,0}, 1920, 1080, "player 1" };
-		miniField* p1 = nullptr;
 		player1.hide();
 		Field player2{ {0,0}, 1920, 1080, "player 2" };
 		player2.hide();
@@ -30,8 +29,6 @@ void start()
 				else
 				{
 					player1.show();
-					p1 = new miniField{ {1400, 200 }, player1.get_squareLenght() / 2, player2.ship };
-					player1.draw_minifield(p1);
 					Graph_lib::gui_main();
 				}
 			}

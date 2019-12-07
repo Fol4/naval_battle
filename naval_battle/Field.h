@@ -1,5 +1,5 @@
 #pragma once
-#include "miniField.h"
+#include "MyWindow.h"
 
 class Field : public MyWindow
 {
@@ -10,7 +10,6 @@ public:
 	void destroy_ship();
 	void surround(field_point p1, field_point p2);
 	int get_squareLenght() { return squareLenght; }
-	void draw_minifield(miniField* mf);
 	void draw_button();
 	bool ship_destroyed();
 	bool get_first() { return first; }
