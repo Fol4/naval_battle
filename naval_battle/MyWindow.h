@@ -6,9 +6,11 @@ struct MyWindow : Graph_lib::Window
 		int start_x, int start_y, const std::string& title);
 	MyWindow(Graph_lib::Point p, int w, int h);
 
-	void add_position(field_point p1, field_point p2);
+	bool add_position(field_point p1, field_point p2);
 	std::string get_mode() { return mode; };
 	bool is_full();
+	void clear_warning() { for (auto i : warnings) detach(*i);  warnings.clear(); warningNow = 1080 / 8 + 30;}
+	void attach_warnings(int& warningNow, const std::string& s, std::vector<Graph_lib::Text*>& warnings, int warningX);
 
 	std::vector<Ship*> ship;
 	std::vector<field_point> ship_position;
@@ -20,6 +22,9 @@ protected:
 
 	std::vector<Graph_lib::Image*> fire;
 	std::vector<Graph_lib::Image*> cross;
+	std::vector<Graph_lib::Text*> warnings;
+	int warningX;
+	int warningNow;
 private:
 	Graph_lib::Button* quit_button;
 	Graph_lib::Button* next_button;
@@ -30,6 +35,7 @@ private:
 	Graph_lib::In_box start;
 	Graph_lib::In_box end;
 	Graph_lib::In_box folder;
+	Graph_lib::Rectangle* warning;
 
 	int squareLenght;
 	int startX;

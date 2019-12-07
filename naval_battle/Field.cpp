@@ -8,11 +8,9 @@ Field::Field(Graph_lib::Point p, int w, int h, const std::string& title) :
 				Graph_lib::reference_to <Field> (pw).next_turn();
 			}} },
 	startX{ w / 15 }, startY{ h / 5 },
-	squareLenght{ cell_size * w / 1500 },
-	width{ w }, height{ h }
+	squareLenght{ cell_size * w / 1500 }
 {
 	attach(*next_turn_button);
-
 	for (int i = 0; i < 10; ++i)
 	{
 		fieldR.emplace_back();

@@ -16,8 +16,14 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int 
 	end{Graph_lib::Point { w/7, h/100}, 100, h/50, "Ship End" },
 	folder{Graph_lib::Point{w / 10, 3 * h / 4}, 3 * w / 4, w / 20, "Path"},
 	squareLenght{size},
-	startX{start_x}, startY{start_y}
+	startX{start_x}, startY{start_y},
+	warning{ new Graph_lib::Rectangle{{w - w / 3, h/8}, w / 3, size * 10 } },
+	warningX{ w - w / 3 + 15}, warningNow{ h/8 + 30}
 {
+	warning->set_fill_color(Graph_lib::Color::white);
+	warning->set_color(Graph_lib::Color::black);
+	attach(*warning);
+
 	attach(*quit_button);
 	attach(*next_button);
 	attach(start);
@@ -76,10 +82,12 @@ void MyWindow::next()
 	field_point Start = string_to_point(StartCord);
 	field_point End = string_to_point(EndCord);
 
-	add_position(Start, End);
-	ship.push_back(new Ship(Start, End, squareLenght, startX, startY));
-	attach(*ship[ship.size()-1]); 
-	ship_position.push_back(Start);
+	if (add_position(Start, End))
+	{
+		ship.push_back(new Ship(Start, End, squareLenght, startX, startY));
+		attach(*ship[ship.size() - 1]);
+		ship_position.push_back(Start);
+	}
 		
 	redraw();
 }
@@ -92,7 +100,7 @@ void MyWindow::pvp()
 		hide();
 	}
 	else
-		std::cerr << "Need a path";
+		std::cerr << "Need a path" << std::endl;
 }
 
 void MyWindow::pve()
@@ -103,7 +111,7 @@ void MyWindow::pve()
 		hide();
 	}
 	else
-		std::cerr << "Need a path";
+		std::cerr << "Need a path" << std::endl;
 }
 
 void MyWindow::help()
@@ -114,7 +122,7 @@ void MyWindow::help()
 		hide();
 	}
 	else
-		std::cerr << "Need a path";
+		std::cerr << "Need a path" << std::endl;
 }
 
 void MyWindow::input()
@@ -123,31 +131,63 @@ void MyWindow::input()
 	is_folder = true;
 }
 
-void MyWindow::add_position(field_point p1, field_point p2)
+void MyWindow::attach_warnings(int& warningNow, const std::string& s, std::vector<Graph_lib::Text*>& warnings, int warningX)
+{
+	if (warningNow > 1000)
+		clear_warning();
+	warnings.push_back(new Graph_lib::Text({ warningX, warningNow }, "Wrong postition"));
+	warnings[warnings.size() - 1]->set_color(Graph_lib::Color::red);
+	warnings[warnings.size() - 1]->set_font_size(35);
+	attach(*warnings[warnings.size() - 1]);
+	warningNow += 30;
+}
+
+bool MyWindow::add_position(field_point p1, field_point p2)
 {
 	if (p1.first == p2.first)
 	{
 		if (ship_count[abs(p1.second - p2.second) + 1] == 0)
-			throw std::runtime_error("Ship is full");
+		{
+			attach_warnings(warningNow, "Ship is full", warnings, warningX);
+			return false;
+		}
 		if (position[p1.first][p1.second] != 0)
-			throw std::runtime_error("Wrong postition");
+		{
+			attach_warnings(warningNow, "Wrong position", warnings, warningX);
+			return false;
+		}
 		else
 		{
 			if (p1.first != 0)
 				if (position[p1.first - 1][p1.second] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			if (p1.first != 9)
 				if (position[p1.first + 1][p1.second] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			if (p1.second != 0)
 				if (position[p1.first][p1.second - 1] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			if(p1.second != 0 and p1.first != 0)
 				if (position[p1.first - 1][p1.second - 1] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			if (p1.second != 0 and p1.first != 9)
 				if (position[p1.first + 1][p1.second - 1] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 		}
 		for (int i = p1.second; i <= p2.second; ++i)
 		{
@@ -155,12 +195,21 @@ void MyWindow::add_position(field_point p1, field_point p2)
 			{
 				if (p1.first != 0)
 					if (position[p1.first - 1][i + 1] != 0)
-						throw std::runtime_error("Wrong postition");
+					{
+						attach_warnings(warningNow, "Wrong position", warnings, warningX);
+						return false;
+					}
 				if (p1.first != 9)
 					if (position[p1.first + 1][i + 1] != 0)
-						throw std::runtime_error("Wrong postition");
+					{
+						attach_warnings(warningNow, "Wrong position", warnings, warningX);
+						return false;
+					}
 				if (position[p1.first][i + 1] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			}
 			position[p1.first][i] = 1;
 		}
@@ -169,26 +218,47 @@ void MyWindow::add_position(field_point p1, field_point p2)
 	else if (p1.second == p2.second)
 	{
 		if (ship_count[abs(p1.first - p2.first) + 1] == 0)
-			throw std::runtime_error("Ship is full");
+		{
+			attach_warnings(warningNow, "Ship is full", warnings, warningX);
+			return false;
+		}
 		if (position[p1.first][p1.second] != 0)
-			throw std::runtime_error("Wrong postition");
+		{
+			attach_warnings(warningNow, "Wrong position", warnings, warningX);
+			return false;
+		}
 		else
 		{
 			if (p1.second != 0)
 				if (position[p1.first][p1.second - 1] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			if (p1.second != 9)
 				if (position[p1.first][p1.second + 1] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			if (p1.first != 0)
 				if (position[p1.first - 1][p1.second] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			if (p1.second != 0 and p1.first != 0)
 				if (position[p1.first - 1][p1.second - 1] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			if (p1.second != 9 and p1.first != 0)
 				if (position[p1.first - 1][p1.second + 1] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 		}
 		for (int i = p1.first; i <= p2.first; ++i)
 		{
@@ -196,17 +266,27 @@ void MyWindow::add_position(field_point p1, field_point p2)
 			{
 				if (p1.second != 0)
 					if (position[i + 1][p1.second - 1] != 0)
-						throw std::runtime_error("Wrong postition");
+					{
+						attach_warnings(warningNow, "Wrong position", warnings, warningX);
+						return false;
+					}
 				if (p1.second != 9)
 					if (position[i + 1][p1.second + 1] != 0)
-						throw std::runtime_error("Wrong postition");
+					{
+						attach_warnings(warningNow, "Wrong position", warnings, warningX);
+						return false;
+					}
 				if (position[i + 1][p1.second] != 0)
-					throw std::runtime_error("Wrong postition");
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					return false;
+				}
 			}
 			position[i][p1.second] = 1;
 		}
 		ship_count[abs(p1.first - p2.first) + 1]--;
 	}
+	return true;
 }
 
 bool MyWindow::is_full()
