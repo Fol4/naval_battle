@@ -17,7 +17,7 @@ void start()
 		player1.hide();
 		Field player2{ {0,0}, 1920, 1080, "player 2" };
 		player2.hide();
-		for (int i = 0; true; ++i)
+		for (int i = 0; mode != "quit"; ++i)
 		{
 			if (i % 2 == 0)
 			{
@@ -25,11 +25,18 @@ void start()
 				{
 					player2.show();
 					Graph_lib::gui_main();
+					mode = player2.get_mode();
 				}
 				else
 				{
 					player1.show();
 					Graph_lib::gui_main();
+					mode = player1.get_mode();
+					if (player1.all_ship() == 0)
+					{
+						std::cout << "1 You won" << std::endl;
+						break;
+					}
 				}
 			}
 			else
@@ -38,11 +45,18 @@ void start()
 				{
 					player1.show();
 					Graph_lib::gui_main();
+					mode = player1.get_mode();
 				}
 				else
 				{
 					player2.show();
 					Graph_lib::gui_main();
+					mode = player2.get_mode();
+					if (player2.all_ship() == 0)
+					{
+						std::cout << "2 You won" << std::endl;
+						break;
+					}
 				}
 			}
 		}

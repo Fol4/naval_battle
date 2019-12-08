@@ -14,6 +14,7 @@ public:
 	bool ship_destroyed();
 	bool get_first() { return first; }
 	void clear_field();
+	int all_ship() { int i = 0; for (auto j : ship) if (!j) ++i; return i; }
 private:
 	Graph_lib::Button* next_turn_button;
 

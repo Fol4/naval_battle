@@ -76,20 +76,23 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h):
 
 void MyWindow::next()
 {
-	std::string StartCord = start.get_string();
-	std::string EndCord = end.get_string();
-
-	field_point Start = string_to_point(StartCord);
-	field_point End = string_to_point(EndCord);
-
-	if (add_position(Start, End))
+	if(!is_full())
 	{
-		ship.push_back(new Ship(Start, End, squareLenght, startX, startY));
-		attach(*ship[ship.size() - 1]);
-		ship_position.push_back(Start);
+		std::string StartCord = start.get_string();
+		std::string EndCord = end.get_string();
+
+		field_point Start = string_to_point(StartCord);
+		field_point End = string_to_point(EndCord);
+
+		if (add_position(Start, End))
+		{
+			ship.push_back(new Ship(Start, End, squareLenght, startX, startY));
+			attach(*ship[ship.size() - 1]);
+			ship_position.push_back(Start);
+		}
+
+		redraw();
 	}
-		
-	redraw();
 }
 
 void MyWindow::pvp() 

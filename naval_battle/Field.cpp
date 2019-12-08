@@ -50,7 +50,6 @@ void Field::draw_button()
 }
 void Field::clicked(Graph_lib::Address widget)
 {
-	turn_down = true;
 	Fl_Widget& w = Graph_lib::reference_to<Fl_Widget>(widget);
 
 	int x = (w.x() - startY) / squareLenght;
@@ -58,22 +57,29 @@ void Field::clicked(Graph_lib::Address widget)
 
 	if (position[x][y] == 1)
 	{
-		position[x][y] = 2;
-		fire.push_back(new Graph_lib::Image({ w.x(), w.y() }, 
-			"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\explosion.jpg"));
-		attach(*fire[fire.size() - 1]);
+		if (!turn_down)
+		{
+			position[x][y] = 2;
+			fire.push_back(new Graph_lib::Image({ w.x(), w.y() },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\explosion.jpg"));
+			attach(*fire[fire.size() - 1]);
+			fieldB[x][y]->hide();
+
+			destroy_ship();
+		}
 	}
 	else if (position[x][y] == 0)
 	{
-		position[x][y] = 2;
-		cross.push_back(new Graph_lib::Image({ w.x(), w.y() },
-			"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
-		attach(*cross[cross.size() - 1]);
+		if (!turn_down)
+		{
+			position[x][y] = 2;
+			cross.push_back(new Graph_lib::Image({ w.x(), w.y() },
+				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+			attach(*cross[cross.size() - 1]);
+			turn_down = true;
+			fieldB[x][y]->hide();
+		}
 	}
-
-	fieldB[x][y]->hide();
-
-	destroy_ship();
 }
 
 void Field::next_turn()
