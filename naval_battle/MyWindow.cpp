@@ -1,6 +1,6 @@
 #include "MyWindow.h"
 
-MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int start_y, const std::string& title) :
+MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int start_y, const std::string& title, const std::string& fp) :
 	Window{ p, w, h, title  },
 	quit_button{new Graph_lib::Button( Graph_lib::Point{x_max() - w/15, h/100}, w/20, h/50, "Quit",
 	[](Graph_lib::Address, Graph_lib::Address pw) {
@@ -18,7 +18,8 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int 
 	squareLenght{size},
 	startX{start_x}, startY{start_y},
 	warning{ new Graph_lib::Rectangle{{w - w / 3, h/8}, w / 3, size * 10 } },
-	warningX{ w - w / 3 + 15}, warningNow{ h/8 + 30}
+	warningX{ w - w / 3 + 15}, warningNow{ h/8 + 30},
+	folder_path{ fp }
 {
 	warning->set_fill_color(Graph_lib::Color::white);
 	warning->set_color(Graph_lib::Color::black);
@@ -86,7 +87,7 @@ void MyWindow::next()
 
 		if (add_position(Start, End))
 		{
-			ship.push_back(new Ship(Start, End, squareLenght, startX, startY));
+			ship.push_back(new Ship(Start, End, squareLenght, startX, startY, folder_path));
 			attach(*ship[ship.size() - 1]);
 			ship_position.push_back(Start);
 		}
@@ -130,7 +131,8 @@ void MyWindow::help()
 
 void MyWindow::input()
 {
-	folder_path = folder.get_string();
+	this->folder_path = folder.get_string();
+	std::cerr << folder_path << std::endl;
 	is_folder = true;
 }
 

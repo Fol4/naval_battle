@@ -4,7 +4,7 @@
 class Field : public MyWindow
 {
 public:
-	Field(Graph_lib::Point p, int w, int h, const std::string& title);
+	Field(Graph_lib::Point p, int w, int h, const std::string& title, const std::string& fp);
 
 	void clicked(Graph_lib::Address widget);
 	void destroy_ship();

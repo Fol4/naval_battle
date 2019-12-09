@@ -4,6 +4,7 @@
 int main()
 try
 {
+	srand(time(NULL));
 	start();
 
 	return Graph_lib::gui_main();

@@ -16,9 +16,9 @@ std::string Ship::get_picture(field_point start, field_point end)
 	return file_ship_name;
 }
 
-Ship::Ship(field_point Start, field_point End, int size, int start_x, int start_y ) :
+Ship::Ship(field_point Start, field_point End, int size, int start_x, int start_y,const std::string& s ) :
 	Graph_lib::Image({ Start.first * size + start_y, Start.second * size + start_x },
-		"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\"+get_picture(Start, End)),
+		s + get_picture(Start, End)),
 	p1{ Start }, p2{ End }
 {
 }

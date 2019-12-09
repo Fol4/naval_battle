@@ -3,7 +3,7 @@
 struct MyWindow : Graph_lib::Window
 {
 	MyWindow(Graph_lib::Point p, int w, int h, int size, 
-		int start_x, int start_y, const std::string& title);
+		int start_x, int start_y, const std::string& title, const std::string& fp);
 	MyWindow(Graph_lib::Point p, int w, int h);
 
 	bool add_position(field_point p1, field_point p2);
@@ -11,6 +11,7 @@ struct MyWindow : Graph_lib::Window
 	bool is_full();
 	void clear_warning() { for (auto i : warnings) detach(*i);  warnings.clear(); warningNow = 1080 / 8 + 30;}
 	void attach_warnings(int& warningNow, const std::string& s, std::vector<Graph_lib::Text*>& warnings, int warningX);
+	std::string get_folder() { return folder_path; }
 
 	std::vector<Ship*> ship;
 	std::vector<field_point> ship_position;
@@ -25,6 +26,7 @@ protected:
 	std::vector<Graph_lib::Text*> warnings;
 	int warningX;
 	int warningNow;
+	std::string folder_path;
 private:
 	Graph_lib::Button* quit_button;
 	Graph_lib::Button* next_button;
@@ -41,7 +43,6 @@ private:
 	int startX;
 	int startY;
 	std::string mode;
-	std::string folder_path;
 	bool is_folder = false;
 
 

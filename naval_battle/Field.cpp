@@ -1,7 +1,7 @@
 #include "Field.h"
 
-Field::Field(Graph_lib::Point p, int w, int h, const std::string& title) :
-	MyWindow{ p, w, h, cell_size * w / 1500, w / 15, h / 5, title },
+Field::Field(Graph_lib::Point p, int w, int h, const std::string& title, const std::string& fp) :
+	MyWindow{ p, w, h, cell_size * w / 1500, w / 15, h / 5, title , fp},
 	next_turn_button{ new Graph_lib::Button{{w/4, h/100}, w/20, h/50, "Next Turn",
 	[](Graph_lib::Address, Graph_lib::Address pw)
 			{
@@ -10,6 +10,7 @@ Field::Field(Graph_lib::Point p, int w, int h, const std::string& title) :
 	startX{ w / 15 }, startY{ h / 5 },
 	squareLenght{ cell_size * w / 1500 }
 {
+				std::cout << folder_path << std::endl;
 	attach(*next_turn_button);
 	for (int i = 0; i < 10; ++i)
 	{
@@ -18,7 +19,7 @@ Field::Field(Graph_lib::Point p, int w, int h, const std::string& title) :
 		{
 			fieldR[i].push_back(new Graph_lib::Image({ startY + i * squareLenght,
 				startX + j * squareLenght },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\water_texture.jpg"));
+				folder_path + "water_texture.jpg"));
 			attach(*fieldR[i][j]);
 		}
 	}
@@ -61,7 +62,7 @@ void Field::clicked(Graph_lib::Address widget)
 		{
 			position[x][y] = 2;
 			fire.push_back(new Graph_lib::Image({ w.x(), w.y() },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\explosion.jpg"));
+				folder_path+"explosion.jpg"));
 			attach(*fire[fire.size() - 1]);
 			fieldB[x][y]->hide();
 
@@ -74,7 +75,7 @@ void Field::clicked(Graph_lib::Address widget)
 		{
 			position[x][y] = 2;
 			cross.push_back(new Graph_lib::Image({ w.x(), w.y() },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			turn_down = true;
 			fieldB[x][y]->hide();
@@ -163,7 +164,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ (p1.first - 1)*squareLenght + startY,
 				p1.second*squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first - 1][p1.second]->hide();
 		}
@@ -171,7 +172,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ (p1.first + 1) * squareLenght + startY, 
 				p1.second* squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first + 1][p1.second]->hide();
 		}
@@ -179,14 +180,14 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ p1.first * squareLenght + startY, 
 				(p1.second - 1)* squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 		}
 		if (p1.second != 0 and p1.first != 0)
 		{
 			cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
 				(p1.second - 1) * squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first - 1][p1.second - 1]->hide();
 		}
@@ -194,7 +195,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ (p1.first + 1) * squareLenght + startY,
 				(p1.second - 1) * squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first + 1][p1.second - 1]->hide();
 		}
@@ -206,7 +207,7 @@ void Field::surround(field_point p1, field_point p2)
 				{
 					cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
 						(i + 1) * squareLenght + startX },
-						"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+						folder_path + "cross.jpg"));
 					attach(*cross[cross.size() - 1]);
 					fieldB[p1.first - 1][i+1]->hide();
 				}
@@ -214,7 +215,7 @@ void Field::surround(field_point p1, field_point p2)
 				{
 					cross.push_back(new Graph_lib::Image({ (p1.first + 1) * squareLenght + startY,
 						(i + 1) * squareLenght + startX },
-						"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+						folder_path + "cross.jpg"));
 					attach(*cross[cross.size() - 1]);
 					fieldB[p1.first + 1][i + 1]->hide();
 				}
@@ -224,7 +225,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ (p1.first) * squareLenght + startY, 
 				(p2.second + 1)* squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first ][p1.second + 1]->hide();
 		}
@@ -235,7 +236,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ p1.first * squareLenght + startY, 
 				(p1.second - 1)* squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first ][p1.second - 1]->hide();
 		}
@@ -243,7 +244,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ p1.first * squareLenght + startY,
 				(p1.second + 1)* squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first][p1.second + 1]->hide();
 		}
@@ -251,7 +252,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
 				(p1.second)* squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first - 1][p1.second]->hide();
 		}
@@ -259,7 +260,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
 				(p1.second - 1) * squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first - 1][p1.second - 1]->hide();
 		}
@@ -267,7 +268,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ (p1.first - 1) * squareLenght + startY,
 				(p1.second + 1) * squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first - 1][p1.second + 1]->hide();
 		}
@@ -279,7 +280,7 @@ void Field::surround(field_point p1, field_point p2)
 				{
 					cross.push_back(new Graph_lib::Image({ (i + 1) * squareLenght + startY,
 						(p1.second - 1) * squareLenght + startX },
-						"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+						folder_path + "cross.jpg"));
 					attach(*cross[cross.size() - 1]);
 					fieldB[i + 1][p1.second - 1]->hide();
 				}
@@ -287,7 +288,7 @@ void Field::surround(field_point p1, field_point p2)
 				{
 					cross.push_back(new Graph_lib::Image({ (i + 1) * squareLenght + startY,
 						(p1.second + 1) * squareLenght + startX },
-						"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+						folder_path + "cross.jpg"));
 					attach(*cross[cross.size() - 1]);
 					fieldB[i + 1][p1.second + 1]->hide();
 				}
@@ -297,7 +298,7 @@ void Field::surround(field_point p1, field_point p2)
 		{
 			cross.push_back(new Graph_lib::Image({ (p1.first + 3) * squareLenght + startY,
 				p1.second* squareLenght + startX },
-				"C:\\Users\\user\\source\\repos\\naval_battle\\naval_battle\\pic\\cross.jpg"));
+				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
 			fieldB[p1.first + 3][p1.second ]->hide();
 		}
