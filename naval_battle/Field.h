@@ -14,16 +14,12 @@ public:
 	bool get_smn_win() { return smn_win; }
 	void draw_button();
 	bool ship_destroyed();
+	void clear_ship();
 	void clear_field();
 	int all_ship();
 private:
 	Graph_lib::Button* next_turn_button;
-	Graph_lib::Button* win_button = new Graph_lib::Button{ {0,0}, width, height, "",
-		[](Graph_lib::Address, Graph_lib::Address pw)
-				{
-					Graph_lib::reference_to<Field>(pw).win();
-				}
-	};
+	Graph_lib::Button* win_button;
 	Graph_lib::Image win_image{ {width / 5, height / 3}, folder_path + "win_image.jpg" };
 	Graph_lib::Rectangle win_background{ {0,0}, 1920, 1080 };
 

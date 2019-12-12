@@ -26,6 +26,8 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int 
 	warningX{ w - w / 3 + 15}, warningNow{ h/8 + 30},
 	folder_path{ fp }
 {
+	fullscreen();
+
 	warning->set_fill_color(Graph_lib::Color::white);
 	warning->set_color(Graph_lib::Color::black);
 	attach(*warning);
@@ -74,26 +76,87 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h):
 	attach(folder);
 }
 
+field_point MyWindow::string_to_point(const std::string& s)
+{
+	int x_point = s[s.length() - 1] - 65;
+	std::string strY = "";
+
+	for (const auto& c : s)
+		if (c == ':')
+			break;
+		else
+			strY += c;
+
+	int y_point = atoi(strY.c_str()) - 1;
+
+	if (x_point < 0 or y_point < 0)
+	{
+		x_point = -1;
+		y_point = -1;
+	};
+	if (s.size() > 4)
+	{
+		x_point = -1;
+		y_point = -1;
+	};
+	if (s[s.size() - 2] != ':')
+	{
+		x_point = -1;
+		y_point = -1;
+	};
+	if (s[0] != '1' and s[0] != '2' and s[0] != '3' and s[0] != '4' and s[0] != '5'
+		and s[0] != '6' and s[0] != '7' and s[0] != '8' and s[0] != '9')
+	{
+		x_point = -1;
+		y_point = -1;
+	};
+	if (s[s.size() - 1] != 'A' and s[s.size() - 1] != 'B' and s[s.size() - 1] != 'C' and s[s.size() - 1] != 'D' and s[s.size() - 1] != 'E'
+		and s[s.size() - 1] != 'F' and s[s.size() - 1] != 'G' and s[s.size() - 1] != 'H' and s[s.size() - 1] != 'I' and s[s.size() - 1] != 'J')
+	{
+		x_point = -1;
+		y_point = -1;
+	};
+
+	return std::make_pair(x_point,y_point);
+}
+
 void MyWindow::next()
 {
 	if(!is_full())
 	{
+
 		std::string StartCord = start.get_string();
 		std::string EndCord = end.get_string();
 
 		field_point Start = string_to_point(StartCord);
 		field_point End = string_to_point(EndCord);
 
-		if (add_position(Start, End))
+		if (Start.first != -1 or End.first != -1)
 		{
-			ship.push_back(new Ship(Start, End, squareLenght, startX, startY, folder_path));
-			attach(*ship[ship.size() - 1]);
-			ship_position.push_back(Start);
+			if (Start.first > End.first)
+				std::swap(Start, End);
+			if (Start.second > End.second)
+				std::swap(Start, End);
+			if ((End.first - Start.first) < 4 and (End.second - Start.second) < 4)
+			{
+				if (add_position(Start, End))
+				{
+					ship.push_back(new Ship(Start, End, squareLenght, startX, startY, folder_path));
+					attach(*ship[ship.size() - 1]);
+					ship_position.push_back(Start);
+				}
+				else
+				{
+					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+				}
+			}
+			else
+			{
+				attach_warnings(warningNow, "Wrong ship", warnings, warningX);
+			}
 		}
 		else
-		{
-			attach_warnings(warningNow, "Warning position", warnings, warningX);
-		}
+			attach_warnings(warningNow, "Wrong input", warnings, warningX);
 
 		redraw();
 	}

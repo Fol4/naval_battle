@@ -7,11 +7,18 @@ Field::Field(Graph_lib::Point p, int w, int h, const std::string& t, const std::
 			{
 				Graph_lib::reference_to <Field> (pw).next_turn();
 			}} },
+	win_button{ new Graph_lib::Button{ {w/2,h/2}, w/10, h/25, "Restart",
+	[](Graph_lib::Address, Graph_lib::Address pw)
+			{
+					Graph_lib::reference_to<Field>(pw).win();
+			}
+	} },
 	startX{ w / 15 }, startY{ h / 5 },
 	squareLenght{ cell_size * w / 1500 },
 	title{t}
 {
-				std::cout << folder_path << std::endl;
+	attach(*win_button);
+	win_button->hide();
 	attach(*next_turn_button);
 	for (int i = 0; i < 10; ++i)
 	{
@@ -42,12 +49,45 @@ Field::Field(Graph_lib::Point p, int w, int h, const std::string& t, const std::
 	attach(*vertical[vertical.size() - 1]);
 }
 
+void Field::clear_field()
+{
+	for (int i = 0; i < cross.size(); ++i)
+		detach(*cross[i]);
+
+	for (int i = 0; i < fire.size(); ++i)
+		detach(*fire[i]);
+
+	for (int i = 0; i < 10; ++i)
+		for (int j = 0; j < 10; ++j)
+			detach(*fieldR[i][j]);
+
+	for (int i = 0; i < 10; ++i)
+		for (int j = 0; j < 10; ++j)
+			detach(*fieldB[i][j]);
+
+	for (int i = 0; i < horizontal.size(); ++i)
+		detach(*horizontal[i]);
+
+	for (int i = 0; i < vertical.size(); ++i)
+		detach(*vertical[i]);
+
+	for (int i = 0; i < warnings.size(); ++i)
+		detach(*warnings[i]);
+
+	next_turn_button->hide();
+	next_button->hide();
+	start.hide();
+	end.hide();
+
+	detach(*warning);
+}
 void Field::win()
 {
 	smn_win = true;
+	hide();
 }
 
-void Field::clear_field()
+void Field::clear_ship()
 {
 	for (auto i : ship)
 		detach(*i);
@@ -101,10 +141,8 @@ void Field::clicked(Graph_lib::Address widget)
 
 			if (all_ship() == 0)
 			{
-				std::cout << 1;			
-				attach(*win_button);
-				win_background.set_fill_color(Graph_lib::Color::white);
-				attach(win_background);
+				clear_field();
+				win_button->show();
 				attach(win_image);
 			}
 		}
@@ -129,19 +167,19 @@ void Field::next_turn()
 	if (first)
 	{
 		if (!is_full())
-			std::cerr << "Field not full" << std::endl;
+			attach_warnings(warningNow, "Field not full", warnings, warningX);
 		else
 		{
 			hide();
 			draw_button();
 			first = false;
 			turn_down = false;
-			clear_field();
+			clear_ship();
 		}
 	}
 	else
 		if (!turn_down)
-			std::cerr << "Turn not down" << std::endl;
+			attach_warnings(warningNow, "Turn not down", warnings, warningX);
 		else
 		{
 			turn_down = false;

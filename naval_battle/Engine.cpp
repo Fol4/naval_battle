@@ -1,20 +1,17 @@
 #include "Engine.h"
 
-void change_mode();
+void start();
 
 void mods(const std::string& folder_path, std::string& mode)
 {
 	if (mode == "pvp")
 	{
-		std::string smn_win;
 		Field player1{ {0,0}, 1920, 1080, "player 1" , folder_path };
 		player1.hide();
 		Field player2{ {0,0}, 1920, 1080, "player 2" , folder_path };
 		player2.hide();
 		for (int i = 0; mode != "quit"; ++i)
 		{
-			if (player1.get_smn_win() or player2.get_smn_win())
-				start();
 			if (i % 2 == 0)
 			{
 				if (player2.get_first())
@@ -45,13 +42,15 @@ void mods(const std::string& folder_path, std::string& mode)
 					mode = player2.get_mode();
 				}
 			}
+			if (player1.get_smn_win() or player2.get_smn_win())
+			{
+				player1.hide();
+				player2.hide();
+				mode = "quit";
+				start();
+			}
 		}
 	}
-}
-
-void start()
-{
-	change_mode();
 }
 
 void change_mode()
@@ -68,4 +67,10 @@ void change_mode()
 
 	mods(folder_path, mode);
 }
+
+void start()
+{
+	change_mode();
+}
+
 
