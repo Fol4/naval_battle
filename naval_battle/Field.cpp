@@ -1,19 +1,30 @@
 #include "Field.h"
 
-Field::Field(Graph_lib::Point p, int w, int h, const std::string& title, const std::string& fp) :
-	MyWindow{ p, w, h, cell_size * w / 1500, w / 15, h / 5, title , fp},
+Field::Field(Graph_lib::Point p, int w, int h, const std::string& t, const std::string& fp) :
+	MyWindow{ p, w, h, cell_size * w / 1500, w / 15, h / 5, t , fp},
 	next_turn_button{ new Graph_lib::Button{{w/4, h/100}, w/20, h/50, "Next Turn",
 	[](Graph_lib::Address, Graph_lib::Address pw)
 			{
 				Graph_lib::reference_to <Field> (pw).next_turn();
 			}} },
 	startX{ w / 15 }, startY{ h / 5 },
-	squareLenght{ cell_size * w / 1500 }
+	squareLenght{ cell_size * w / 1500 },
+	title{t}
 {
 				std::cout << folder_path << std::endl;
 	attach(*next_turn_button);
 	for (int i = 0; i < 10; ++i)
 	{
+		if (i != 9)
+		{
+			vertical.push_back(new Graph_lib::Mark({ startX + 55, startY + i * squareLenght - 50 }, '1' + i));
+			vertical[i]->set_color(FL_DARK_MAGENTA);
+			attach(*vertical[i]);
+		}
+		horizontal.push_back(new Graph_lib::Mark({ startX + i * squareLenght + 135, startY - 100}, 'A' + i));
+		horizontal[i]->set_color(FL_DARK_MAGENTA);
+		attach(*horizontal[i]);
+
 		fieldR.emplace_back();
 		for (int j = 0; j < 10; ++j)
 		{
@@ -23,6 +34,17 @@ Field::Field(Graph_lib::Point p, int w, int h, const std::string& title, const s
 			attach(*fieldR[i][j]);
 		}
 	}
+	vertical.push_back(new Graph_lib::Mark({ startX + 50, startY + 9 * squareLenght - 50 }, '1'));
+	vertical.push_back(new Graph_lib::Mark({ startX + 60, startY + 9 * squareLenght - 50 }, '0'));
+	vertical[vertical.size() - 2]->set_color(FL_DARK_MAGENTA);
+	vertical[vertical.size() - 1]->set_color(FL_DARK_MAGENTA);
+	attach(*vertical[vertical.size() - 2]);
+	attach(*vertical[vertical.size() - 1]);
+}
+
+void Field::win()
+{
+	smn_win = true;
 }
 
 void Field::clear_field()
@@ -76,6 +98,15 @@ void Field::clicked(Graph_lib::Address widget)
 			fieldB[x][y]->hide();
 
 			destroy_ship();
+
+			if (all_ship() == 0)
+			{
+				std::cout << 1;			
+				attach(*win_button);
+				win_background.set_fill_color(Graph_lib::Color::white);
+				attach(win_background);
+				attach(win_image);
+			}
 		}
 	}
 	else if (position[x][y] == 0)
@@ -94,6 +125,7 @@ void Field::clicked(Graph_lib::Address widget)
 
 void Field::next_turn()
 {
+	random_button->hide();
 	if (first)
 	{
 		if (!is_full())
@@ -139,6 +171,7 @@ void Field::destroy_ship()
 		if (s == k and s != 0)
 		{
 			surround(ship[i]->start(), ship[i]->end());
+			ship_position[i] = std::make_pair(-1, -1);
 			redraw();
 		}
 	}

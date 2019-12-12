@@ -27,13 +27,13 @@ protected:
 	int warningX;
 	int warningNow;
 	std::string folder_path;
+	Graph_lib::Button* random_button;
 private:
 	Graph_lib::Button* quit_button;
 	Graph_lib::Button* next_button;
 	Graph_lib::Button* pvp_button;
 	Graph_lib::Button* help_button;
 	Graph_lib::Button* input_button;
-	Graph_lib::Button* random_button;
 	Graph_lib::In_box start;
 	Graph_lib::In_box end;
 	Graph_lib::In_box folder;
