@@ -1,22 +1,6 @@
 #include "Engine.h"
 
-void start()
-{
-	change_mode();
-}
-
-void change_mode()
-{
-	std::string mode;
-	std::string folder_path;
-	while (mode != "pvp" and mode != "help" and mode != "quit")
-	{
-		MyWindow menu({ 500 , 100 }, 800, 800);
-		Graph_lib::gui_main();
-		mode = menu.get_mode();
-		folder_path = menu.get_folder();
-	}
-}
+void change_mode();
 
 void mods(const std::string& folder_path, std::string& mode)
 {
@@ -64,3 +48,24 @@ void mods(const std::string& folder_path, std::string& mode)
 		}
 	}
 }
+
+void start()
+{
+	change_mode();
+}
+
+void change_mode()
+{
+	std::string mode;
+	std::string folder_path;
+	while (mode != "pvp" and mode != "help" and mode != "quit")
+	{
+		MyWindow menu({ 500 , 100 }, 800, 800);
+		Graph_lib::gui_main();
+		mode = menu.get_mode();
+		folder_path = menu.get_folder();
+	}
+
+	mods(folder_path, mode);
+}
+
