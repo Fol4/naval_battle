@@ -19,7 +19,7 @@ struct MyWindow : Graph_lib::Window
 		matrix_2d<int>(10, 10, 0);
 
 protected:
-	std::map<int, int> ship_count = { {1,0}, {2,0}, {3,1}, {4,0} };
+	std::map<int, int> ship_count = { {1,4}, {2,3}, {3,2}, {4,1} };
 
 	std::vector<Graph_lib::Image*> fire;
 	std::vector<Graph_lib::Image*> cross;
@@ -31,9 +31,9 @@ private:
 	Graph_lib::Button* quit_button;
 	Graph_lib::Button* next_button;
 	Graph_lib::Button* pvp_button;
-	Graph_lib::Button* pve_button;
 	Graph_lib::Button* help_button;
 	Graph_lib::Button* input_button;
+	Graph_lib::Button* random_button;
 	Graph_lib::In_box start;
 	Graph_lib::In_box end;
 	Graph_lib::In_box folder;
@@ -49,7 +49,7 @@ private:
 	void quit() { hide(); mode = "quit"; }
 	void next();
 	void pvp();
-	void pve();
 	void help();
 	void input();
+	void random_fun();
 };

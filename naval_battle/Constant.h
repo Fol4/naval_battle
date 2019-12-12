@@ -14,6 +14,8 @@
 #define field_point std::pair<int, int>
 field_point string_to_point(const std::string& s);
 
+int random_int(int a);
+
 template <typename T>
 std::vector<T> matrix_1d(int l, T fill = 0)
 {

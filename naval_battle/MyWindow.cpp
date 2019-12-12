@@ -12,6 +12,11 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int 
 							  Graph_lib::reference_to<MyWindow>(pw).next();
 							  }
 				)},
+	random_button{new Graph_lib::Button(Graph_lib::Point {w /3 , h / 100}, w/20, h/50, "Random",
+	[](Graph_lib::Address , Graph_lib::Address pw) {
+							  Graph_lib::reference_to<MyWindow>(pw).random_fun();
+							  }
+				) },
 	start{Graph_lib::Point {w/20, h/100}, 100, h/50, "Ship Start" },
 	end{Graph_lib::Point { w/7, h/100}, 100, h/50, "Ship End" },
 	folder{Graph_lib::Point{w / 10, 3 * h / 4}, 3 * w / 4, w / 20, "Path"},
@@ -27,6 +32,7 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int 
 
 	attach(*quit_button);
 	attach(*next_button);
+	attach(*random_button);
 	attach(start);
 	attach(end);
 }
@@ -44,12 +50,6 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h):
 	[](Graph_lib::Address , Graph_lib::Address pw) {
 						  Graph_lib::reference_to<MyWindow>(pw).pvp();
 						  }
-				)},
-	pve_button{new Graph_lib::Button( Graph_lib::Point{w/8, 3*h/7}, 3*w/4, h/20,
-		"Player VS Environment",
-	[](Graph_lib::Address , Graph_lib::Address pw) {
-					   Graph_lib::reference_to<MyWindow>(pw).pve();
-					   }
 				)},
 	help_button{new Graph_lib::Button(Graph_lib::Point{w / 8, 4 * h / 7}, 3 * w / 4, h / 20,
 		"Rules",
@@ -69,7 +69,6 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h):
 {
 	attach(*quit_button);
 	attach(*pvp_button);
-	attach(*pve_button);
 	attach(*help_button);
 	attach(*input_button);
 	attach(folder);
@@ -91,6 +90,10 @@ void MyWindow::next()
 			attach(*ship[ship.size() - 1]);
 			ship_position.push_back(Start);
 		}
+		else
+		{
+			attach_warnings(warningNow, "Warning position", warnings, warningX);
+		}
 
 		redraw();
 	}
@@ -101,17 +104,6 @@ void MyWindow::pvp()
 	if (is_folder)
 	{
 		mode = "pvp";
-		hide();
-	}
-	else
-		std::cerr << "Need a path" << std::endl;
-}
-
-void MyWindow::pve()
-{
-	if (is_folder)
-	{
-		mode = "pve";
 		hide();
 	}
 	else
@@ -136,11 +128,103 @@ void MyWindow::input()
 	is_folder = true;
 }
 
+void MyWindow::random_fun()
+{
+	std::vector<field_point> all;
+	for (int i = 0; i < 10; ++i)
+		for (int j = 0; j < 10; ++j)
+			all.push_back(std::make_pair( i,j ));
+	int i = 0;
+	int  j = 0;
+	while (i < 2)
+	{
+		j = i;
+		while (j < 4)
+		{
+			int direction = random_int(2);
+			while (direction == 2)
+				direction = random_int(2);
+			field_point p_start = all[random_int(all.size() - 1)];
+			field_point p_end = direction == 1 ? std::make_pair(p_start.first + i, p_start.second) : std::make_pair(p_start.first, p_start.second + i);
+
+			if (add_position(p_start, p_end))
+			{
+				ship.push_back(new Ship(p_start, p_end, squareLenght, startX, startY, folder_path));
+				attach(*ship[ship.size() - 1]);
+				ship_position.push_back(p_start);
+				++j;
+			}
+		}
+		i++;
+	}
+	while (i < 4)
+	{
+		j = i;
+		while (j < 4)
+		{
+			for (int i1 = 0; i1 < 10; i1++)
+			{
+				if (j > 3)
+					break;
+				for (int j1 = 0; j1 < 10; j1++)
+				{
+					if (j > 3)
+						break;
+					if (position[i1][j1] == 0)
+					{
+						int d1 = 0;
+						int d2 = 0;
+						for (int c = 0; c < i + 1; ++c)
+						{
+							if (j1 + c < 10)
+								d1 += position[i1][j1 + c];
+							else
+								d1 = 1;
+							if (i1 + c < 10)
+								d2 += position[i1 + c][j1];
+							else
+								d2 = 1;
+						}
+						if (d1 == 0)
+						{
+							field_point p_start = std::make_pair(i1, j1);
+							field_point p_end = std::make_pair(i1, j1 + i);
+							if (add_position(p_start, p_end))
+							{
+								ship.push_back(new Ship(p_start, p_end, squareLenght, startX, startY, folder_path));
+								attach(*ship[ship.size() - 1]);
+								ship_position.push_back(p_start);
+								++j;
+								break;
+							}
+						}
+						else if (d2 == 0)
+						{
+							field_point p_start = std::make_pair(i1, j1);
+							field_point p_end = std::make_pair(i1 + i, j1);
+							if (add_position(p_start, p_end))
+							{
+								ship.push_back(new Ship(p_start, p_end, squareLenght, startX, startY, folder_path));
+								attach(*ship[ship.size() - 1]);
+								ship_position.push_back(p_start);
+								++j;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		i++;
+	}
+	redraw();
+}
+
 void MyWindow::attach_warnings(int& warningNow, const std::string& s, std::vector<Graph_lib::Text*>& warnings, int warningX)
 {
 	if (warningNow > 1000)
 		clear_warning();
-	warnings.push_back(new Graph_lib::Text({ warningX, warningNow }, "Wrong postition"));
+	warnings.push_back(new Graph_lib::Text({ warningX, warningNow }, s));
 	warnings[warnings.size() - 1]->set_color(Graph_lib::Color::red);
 	warnings[warnings.size() - 1]->set_font_size(35);
 	attach(*warnings[warnings.size() - 1]);
@@ -151,14 +235,10 @@ bool MyWindow::add_position(field_point p1, field_point p2)
 {
 	if (p1.first == p2.first)
 	{
-		if (ship_count[abs(p1.second - p2.second) + 1] == 0)
-		{
-			attach_warnings(warningNow, "Ship is full", warnings, warningX);
+		if (p2.second > 9)
 			return false;
-		}
 		if (position[p1.first][p1.second] != 0)
 		{
-			attach_warnings(warningNow, "Wrong position", warnings, warningX);
 			return false;
 		}
 		else
@@ -166,70 +246,59 @@ bool MyWindow::add_position(field_point p1, field_point p2)
 			if (p1.first != 0)
 				if (position[p1.first - 1][p1.second] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			if (p1.first != 9)
 				if (position[p1.first + 1][p1.second] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			if (p1.second != 0)
 				if (position[p1.first][p1.second - 1] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			if(p1.second != 0 and p1.first != 0)
 				if (position[p1.first - 1][p1.second - 1] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			if (p1.second != 0 and p1.first != 9)
 				if (position[p1.first + 1][p1.second - 1] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 		}
-		for (int i = p1.second; i <= p2.second; ++i)
+		for (int i = p1.second; i <= p2.second ; ++i)
 		{
 			if (i != 9)
 			{
 				if (p1.first != 0)
 					if (position[p1.first - 1][i + 1] != 0)
 					{
-						attach_warnings(warningNow, "Wrong position", warnings, warningX);
 						return false;
 					}
 				if (p1.first != 9)
 					if (position[p1.first + 1][i + 1] != 0)
 					{
-						attach_warnings(warningNow, "Wrong position", warnings, warningX);
 						return false;
 					}
 				if (position[p1.first][i + 1] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			}
-			position[p1.first][i] = 1;
 		}
+		for (int i = p1.second; i <= p2.second; ++i)
+			position[p1.first][i] = 1;
 		ship_count[abs(p1.second - p2.second) + 1]--;
 	}
 	else if (p1.second == p2.second)
 	{
-		if (ship_count[abs(p1.first - p2.first) + 1] == 0)
-		{
-			attach_warnings(warningNow, "Ship is full", warnings, warningX);
+		if (p2.first > 9)
 			return false;
-		}
 		if (position[p1.first][p1.second] != 0)
 		{
-			attach_warnings(warningNow, "Wrong position", warnings, warningX);
 			return false;
 		}
 		else
@@ -237,58 +306,51 @@ bool MyWindow::add_position(field_point p1, field_point p2)
 			if (p1.second != 0)
 				if (position[p1.first][p1.second - 1] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			if (p1.second != 9)
 				if (position[p1.first][p1.second + 1] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			if (p1.first != 0)
 				if (position[p1.first - 1][p1.second] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			if (p1.second != 0 and p1.first != 0)
 				if (position[p1.first - 1][p1.second - 1] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			if (p1.second != 9 and p1.first != 0)
 				if (position[p1.first - 1][p1.second + 1] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 		}
 		for (int i = p1.first; i <= p2.first; ++i)
 		{
-			if (i != 9)
+			if (i < 9)
 			{
 				if (p1.second != 0)
 					if (position[i + 1][p1.second - 1] != 0)
 					{
-						attach_warnings(warningNow, "Wrong position", warnings, warningX);
 						return false;
 					}
 				if (p1.second != 9)
 					if (position[i + 1][p1.second + 1] != 0)
 					{
-						attach_warnings(warningNow, "Wrong position", warnings, warningX);
 						return false;
 					}
 				if (position[i + 1][p1.second] != 0)
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
 					return false;
 				}
 			}
-			position[i][p1.second] = 1;
 		}
+		for (int i = p1.first; i <= p2.first; ++i)
+			position[i][p1.second] = 1;
 		ship_count[abs(p1.first - p2.first) + 1]--;
 	}
 	return true;

@@ -19,3 +19,8 @@ field_point string_to_point(const std::string& s)
 
 	return { x,y };
 }
+
+int random_int(int a)
+{
+	return (rand() / double(RAND_MAX)) * a;
+}

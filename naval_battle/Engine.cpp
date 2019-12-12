@@ -121,11 +121,6 @@ bool can(const std::vector<std::vector<int>>& position, int cnt, int direction ,
 	return true;
 }
 
-int random_int(int a)
-{
-	return (rand() / double(RAND_MAX)) * a;
-}
-
 void delete_point(std::vector<field_point>& all, int x, int y)
 {
 	bool d = false;
@@ -325,7 +320,7 @@ void start()
 {
 	std::string mode;
 	std::string folder_path;
-	while (mode != "pvp" and mode != "pve" and mode != "help" and mode != "quit")
+	while (mode != "pvp" and mode != "help" and mode != "quit")
 	{
 		MyWindow menu({ 500 , 100 }, 800, 800);
 		Graph_lib::gui_main();
@@ -382,17 +377,5 @@ void start()
 				}
 			}
 		}
-	}
-	else if (mode == "pve")
-	{
-		std::vector<std::vector<int>> position = bot_field();
-
-		for (int i1 = 0; i1 < 10; ++i1)
-		{
-			for (int j1 = 0; j1 < 10; ++j1)
-				std::cout << position[i1][j1] << " ";
-			std::cout << std::endl;
-		}
-		std::cout << std::endl;
 	}
 }

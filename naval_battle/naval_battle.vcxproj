@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Constant.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="fltk.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GUI.h" />

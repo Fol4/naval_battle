@@ -31,6 +31,15 @@ void Field::clear_field()
 		detach(*i);
 }
 
+int Field::all_ship()
+{
+	int i = 0;
+	for (auto j : ship_position)
+		if (j.first != -1 and j.second != -1)
+			++i;
+	return i;
+}
+
 void Field::draw_button()
 {
 	for (int i = 0; i < 10; ++i)
@@ -60,6 +69,7 @@ void Field::clicked(Graph_lib::Address widget)
 	{
 		if (!turn_down)
 		{
+			std::cout << 1 << std::endl;
 			position[x][y] = 2;
 			fire.push_back(new Graph_lib::Image({ w.x(), w.y() },
 				folder_path+"explosion.jpg"));
@@ -73,7 +83,7 @@ void Field::clicked(Graph_lib::Address widget)
 	{
 		if (!turn_down)
 		{
-			position[x][y] = 2;
+			position[x][y] = 3;
 			cross.push_back(new Graph_lib::Image({ w.x(), w.y() },
 				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
@@ -113,46 +123,27 @@ void Field::destroy_ship()
 	for (int i = 0; (i < ship_position.size()) and ship_position[i].first != -1 
 		and ship_position[i].second != -1; ++i)
 	{
+		std::cout << 2 << std::endl;
 		int x = ship_position[i].first;
 		int y = ship_position[i].second;
+		int s = 0;
+		int k = 0;
 
-		if (position[x][y] == 2)
+		for (int j1 = ship[i]->start().first; j1 <= ship[i]->end().first; ++j1)
+			for (int j = ship[i]->start().second; j <= ship[i]->end().second; ++j)
+			{
+				if (position[j1][j] == 2)
+					++s;
+				++k;
+			}
+
+		if (s == k and s != 0)
 		{
-			if (ship[i]->start() == ship[i]->end())
-			{
-				surround(ship[i]->start(), ship[i]->end());
-				ship_position[i] = { -1, -1 };
-				break;
-			}
-			int s = 0;
-			int k = 0;
-
-			if (position[x][y] + position[x + 1][y] > 3)
-				for (int j = x; j <= ship[i]->end().first; ++j)
-				{
-					if (position[j][y] == 2)
-						s++;
-					k++;
-				}
-			else if (position[x][y] + position[x][y + 1] > 3)
-				for (int j = y; j <= ship[i]->end().second; ++j)
-				{
-					if (position[x][j] == 2)
-						s++;
-					++k;
-				}
-
-			if (s == k and s != 0)
-			{
-				surround(ship[i]->start(), ship[i]->end());
-				ship_position[i] = {-1, -1};
-				break;
-			}
-
+			surround(ship[i]->start(), ship[i]->end());
+			ship_position[i] = {-1, -1};
+			redraw();
 		}
 	}
-
-	redraw();
 }
 
 void Field::surround(field_point p1, field_point p2)
@@ -303,6 +294,7 @@ void Field::surround(field_point p1, field_point p2)
 			fieldB[p1.first + 3][p1.second ]->hide();
 		}
 	}
+	redraw();
 }
 
 bool Field::ship_destroyed()
