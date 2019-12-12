@@ -69,7 +69,6 @@ void Field::clicked(Graph_lib::Address widget)
 	{
 		if (!turn_down)
 		{
-			std::cout << 1 << std::endl;
 			position[x][y] = 2;
 			fire.push_back(new Graph_lib::Image({ w.x(), w.y() },
 				folder_path+"explosion.jpg"));
@@ -120,15 +119,13 @@ void Field::next_turn()
 
 void Field::destroy_ship()
 {
-	for (int i = 0; (i < ship_position.size()) and ship_position[i].first != -1 
-		and ship_position[i].second != -1; ++i)
+	std::cout << "NEW" << std::endl;
+	for (int i = 0; (i < ship_position.size()); ++i)
 	{
-		std::cout << 2 << std::endl;
-		int x = ship_position[i].first;
-		int y = ship_position[i].second;
 		int s = 0;
 		int k = 0;
 
+		std::cout << "new :";
 		for (int j1 = ship[i]->start().first; j1 <= ship[i]->end().first; ++j1)
 			for (int j = ship[i]->start().second; j <= ship[i]->end().second; ++j)
 			{
@@ -137,10 +134,11 @@ void Field::destroy_ship()
 				++k;
 			}
 
+		std::cout << s << " " << k << std::endl;
+
 		if (s == k and s != 0)
 		{
 			surround(ship[i]->start(), ship[i]->end());
-			ship_position[i] = {-1, -1};
 			redraw();
 		}
 	}
@@ -218,7 +216,7 @@ void Field::surround(field_point p1, field_point p2)
 				(p2.second + 1)* squareLenght + startX },
 				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
-			fieldB[p1.first ][p1.second + 1]->hide();
+			fieldB[p1.first][p2.second + 1]->hide();
 		}
 	}
 	else if (p1.second == p2.second)
@@ -287,11 +285,11 @@ void Field::surround(field_point p1, field_point p2)
 		}
 		if (p2.first != 9)
 		{
-			cross.push_back(new Graph_lib::Image({ (p1.first + 3) * squareLenght + startY,
+			cross.push_back(new Graph_lib::Image({ (p2.first + 1) * squareLenght + startY,
 				p1.second* squareLenght + startX },
 				folder_path + "cross.jpg"));
 			attach(*cross[cross.size() - 1]);
-			fieldB[p1.first + 3][p1.second ]->hide();
+			fieldB[p2.first + 1][p1.second ]->hide();
 		}
 	}
 	redraw();
