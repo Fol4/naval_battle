@@ -11,7 +11,6 @@ struct MyWindow : Graph_lib::Window
 	bool is_full();
 	void clear_warning() { for (auto i : warnings) detach(*i);  warnings.clear(); warningNow = 1080 / 8 + 30;}
 	void attach_warnings(int& warningNow, const std::string& s, std::vector<Graph_lib::Text*>& warnings, int warningX);
-	std::string get_folder() { return folder_path; }
 	field_point string_to_point(const std::string& s);
 	std::vector<Ship*> ship;
 	std::vector<field_point> ship_position;
@@ -31,11 +30,8 @@ protected:
 	Graph_lib::Button* quit_button;
 	Graph_lib::Button* next_button;
 	Graph_lib::Button* pvp_button;
-	Graph_lib::Button* help_button;
-	Graph_lib::Button* input_button;
 	Graph_lib::In_box start;
 	Graph_lib::In_box end;
-	Graph_lib::In_box folder;
 	Graph_lib::Rectangle* warning;
 private:
 	int squareLenght;
@@ -48,7 +44,5 @@ private:
 	void quit() { hide(); mode = "quit"; }
 	void next();
 	void pvp();
-	void help();
-	void input();
 	void random_fun();
 };

@@ -12,7 +12,8 @@
 #include "Simple_window.h"
 
 #define field_point std::pair<int, int>
-field_point string_to_point(const std::string& s);
+
+const std::string find_path();
 
 int random_int(int a);
 

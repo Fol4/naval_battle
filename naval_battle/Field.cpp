@@ -189,13 +189,11 @@ void Field::next_turn()
 
 void Field::destroy_ship()
 {
-	std::cout << "NEW" << std::endl;
 	for (int i = 0; (i < ship_position.size()); ++i)
 	{
 		int s = 0;
 		int k = 0;
 
-		std::cout << "new :";
 		for (int j1 = ship[i]->start().first; j1 <= ship[i]->end().first; ++j1)
 			for (int j = ship[i]->start().second; j <= ship[i]->end().second; ++j)
 			{
@@ -203,8 +201,6 @@ void Field::destroy_ship()
 					++s;
 				++k;
 			}
-
-		std::cout << s << " " << k << std::endl;
 
 		if (s == k and s != 0)
 		{

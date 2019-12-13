@@ -62,7 +62,7 @@ void change_mode()
 		MyWindow menu({ 500 , 100 }, 800, 800);
 		Graph_lib::gui_main();
 		mode = menu.get_mode();
-		folder_path = menu.get_folder();
+		folder_path = find_path();
 	}
 
 	mods(folder_path, mode);

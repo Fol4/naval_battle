@@ -19,7 +19,6 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h, int size, int start_x, int 
 				) },
 	start{Graph_lib::Point {w/20, h/100}, 100, h/50, "Ship Start" },
 	end{Graph_lib::Point { w/7, h/100}, 100, h/50, "Ship End" },
-	folder{Graph_lib::Point{w / 10, 3 * h / 4}, 3 * w / 4, w / 20, "Path"},
 	squareLenght{size},
 	startX{start_x}, startY{start_y},
 	warning{ new Graph_lib::Rectangle{{w - w / 3, h/8}, w / 3, size * 10 } },
@@ -53,69 +52,42 @@ MyWindow::MyWindow(Graph_lib::Point p, int w, int h):
 						  Graph_lib::reference_to<MyWindow>(pw).pvp();
 						  }
 				)},
-	help_button{new Graph_lib::Button(Graph_lib::Point{w / 8, 4 * h / 7}, 3 * w / 4, h / 20,
-		"Rules",
-	[](Graph_lib::Address , Graph_lib::Address pw) {
-					   Graph_lib::reference_to<MyWindow>(pw).help();
-					   }
-				) },
-	input_button{new Graph_lib::Button(Graph_lib::Point{6*w/7, 3*h/4}, w/9, w/30,
-					   "Input",
-	[](Graph_lib::Address, Graph_lib::Address pw){
-						Graph_lib::reference_to<MyWindow>(pw).input();
-											  }
-		)},
 	start{ Graph_lib::Point {100, 10}, 100, 20, "Ship Start" },
-	end{ Graph_lib::Point { 300, 10}, 100, 20, "Ship End" },
-	folder{Graph_lib::Point{w/10, 3*h/4}, 3*w/4, w/30, "Path"}	
+	end{ Graph_lib::Point { 300, 10}, 100, 20, "Ship End" }
 {
 	attach(*quit_button);
 	attach(*pvp_button);
-	attach(*help_button);
-	attach(*input_button);
-	attach(folder);
 }
 
 field_point MyWindow::string_to_point(const std::string& s)
 {
-	int x_point = s[s.length() - 1] - 65;
-	std::string strY = "";
+	int x_point;
+	int y_point;
+	if (s.size() < 3)
+	{
+		x_point = -1;
+		y_point = -1;
+	}
+	else if (s.size() <= 4 and s[s.size() - 2] == ':'
+		and (s[0] >= '0' and s[0] <= '9')
+		and (s[s.size() - 1] >= 'A' and s[s.size() - 1] <= 'J'))
+	{
+		x_point = s[s.length() - 1] - 65;
+		std::string strY = "";
 
-	for (const auto& c : s)
-		if (c == ':')
-			break;
-		else
-			strY += c;
+		for (const auto& c : s)
+			if (c == ':')
+				break;
+			else
+				strY += c;
 
-	int y_point = atoi(strY.c_str()) - 1;
-
-	if (x_point < 0 or y_point < 0)
+		y_point = atoi(strY.c_str()) - 1;
+	}
+	else
 	{
 		x_point = -1;
 		y_point = -1;
-	};
-	if (s.size() > 4)
-	{
-		x_point = -1;
-		y_point = -1;
-	};
-	if (s[s.size() - 2] != ':')
-	{
-		x_point = -1;
-		y_point = -1;
-	};
-	if (s[0] != '1' and s[0] != '2' and s[0] != '3' and s[0] != '4' and s[0] != '5'
-		and s[0] != '6' and s[0] != '7' and s[0] != '8' and s[0] != '9')
-	{
-		x_point = -1;
-		y_point = -1;
-	};
-	if (s[s.size() - 1] != 'A' and s[s.size() - 1] != 'B' and s[s.size() - 1] != 'C' and s[s.size() - 1] != 'D' and s[s.size() - 1] != 'E'
-		and s[s.size() - 1] != 'F' and s[s.size() - 1] != 'G' and s[s.size() - 1] != 'H' and s[s.size() - 1] != 'I' and s[s.size() - 1] != 'J')
-	{
-		x_point = -1;
-		y_point = -1;
-	};
+	}
 
 	return std::make_pair(x_point,y_point);
 }
@@ -139,15 +111,22 @@ void MyWindow::next()
 				std::swap(Start, End);
 			if ((End.first - Start.first) < 4 and (End.second - Start.second) < 4)
 			{
-				if (add_position(Start, End))
-				{
-					ship.push_back(new Ship(Start, End, squareLenght, startX, startY, folder_path));
-					attach(*ship[ship.size() - 1]);
-					ship_position.push_back(Start);
+				if(Start.second == End.second ? ship_count[End.first - Start.first + 1] > 0 : ship_count[End.second - Start.second + 1] > 0)
+				{ 
+					if (add_position(Start, End))
+					{
+						ship.push_back(new Ship(Start, End, squareLenght, startX, startY, folder_path));
+						attach(*ship[ship.size() - 1]);
+						ship_position.push_back(Start);
+					}
+					else
+					{
+						attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					}
 				}
 				else
 				{
-					attach_warnings(warningNow, "Wrong position", warnings, warningX);
+					attach_warnings(warningNow, "Ship full", warnings, warningX);
 				}
 			}
 			else
@@ -164,31 +143,8 @@ void MyWindow::next()
 
 void MyWindow::pvp() 
 {
-	if (is_folder)
-	{
 		mode = "pvp";
 		hide();
-	}
-	else
-		std::cerr << "Need a path" << std::endl;
-}
-
-void MyWindow::help()
-{
-	if (is_folder)
-	{
-		mode = "help";
-		hide();
-	}
-	else
-		std::cerr << "Need a path" << std::endl;
-}
-
-void MyWindow::input()
-{
-	this->folder_path = folder.get_string();
-	std::cerr << folder_path << std::endl;
-	is_folder = true;
 }
 
 void MyWindow::random_fun()
