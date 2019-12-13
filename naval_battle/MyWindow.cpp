@@ -109,24 +109,31 @@ void MyWindow::next()
 				std::swap(Start, End);
 			if (Start.second > End.second)
 				std::swap(Start, End);
-			if ((End.first - Start.first) < 4 and (End.second - Start.second) < 4)
+			if (Start.first == End.first or Start.second == End.second)
 			{
-				if(Start.second == End.second ? ship_count[End.first - Start.first + 1] > 0 : ship_count[End.second - Start.second + 1] > 0)
-				{ 
-					if (add_position(Start, End))
+				if ((End.first - Start.first) < 4 and (End.second - Start.second) < 4)
+				{
+					if (Start.second == End.second ? ship_count[End.first - Start.first + 1] > 0 : ship_count[End.second - Start.second + 1] > 0)
 					{
-						ship.push_back(new Ship(Start, End, squareLenght, startX, startY, folder_path));
-						attach(*ship[ship.size() - 1]);
-						ship_position.push_back(Start);
+						if (add_position(Start, End))
+						{
+							ship.push_back(new Ship(Start, End, squareLenght, startX, startY, folder_path));
+							attach(*ship[ship.size() - 1]);
+							ship_position.push_back(Start);
+						}
+						else
+						{
+							attach_warnings(warningNow, "Wrong position", warnings, warningX);
+						}
 					}
 					else
 					{
-						attach_warnings(warningNow, "Wrong position", warnings, warningX);
+						attach_warnings(warningNow, "Ship full", warnings, warningX);
 					}
 				}
 				else
 				{
-					attach_warnings(warningNow, "Ship full", warnings, warningX);
+					attach_warnings(warningNow, "Wrong ship", warnings, warningX);
 				}
 			}
 			else
