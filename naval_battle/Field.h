@@ -25,8 +25,8 @@ private:
 
 	std::vector<std::vector<Graph_lib::Button*>> fieldB;
 	std::vector<std::vector<Graph_lib::Image*>> fieldR;
-	std::vector<Graph_lib::Mark*> horizontal;
-	std::vector<Graph_lib::Mark*> vertical;
+	std::vector<Graph_lib::Text*> horizontal;
+	std::vector<Graph_lib::Text*> vertical;
 
 	int squareLenght;
 	int startX;

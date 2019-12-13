@@ -17,36 +17,35 @@ Field::Field(Graph_lib::Point p, int w, int h, const std::string& t, const std::
 	squareLenght{ cell_size * w / 1500 },
 	title{t}
 {
-	attach(*win_button);
-	win_button->hide();
-	attach(*next_turn_button);
-	for (int i = 0; i < 10; ++i)
-	{
-		if (i != 9)
-		{
-			vertical.push_back(new Graph_lib::Mark({ startX + 55, startY + i * squareLenght - 50 }, '1' + i));
-			vertical[i]->set_color(FL_DARK_MAGENTA);
-			attach(*vertical[i]);
-		}
-		horizontal.push_back(new Graph_lib::Mark({ startX + i * squareLenght + 135, startY - 100}, 'A' + i));
-		horizontal[i]->set_color(FL_DARK_MAGENTA);
-		attach(*horizontal[i]);
+				attach(*win_button);
+				win_button->hide();
+				attach(*next_turn_button);
+				for (int i = 0; i < 10; ++i)
+				{
 
-		fieldR.emplace_back();
-		for (int j = 0; j < 10; ++j)
-		{
-			fieldR[i].push_back(new Graph_lib::Image({ startY + i * squareLenght,
-				startX + j * squareLenght },
-				folder_path + "water_texture.jpg"));
-			attach(*fieldR[i][j]);
-		}
-	}
-	vertical.push_back(new Graph_lib::Mark({ startX + 50, startY + 9 * squareLenght - 50 }, '1'));
-	vertical.push_back(new Graph_lib::Mark({ startX + 60, startY + 9 * squareLenght - 50 }, '0'));
-	vertical[vertical.size() - 2]->set_color(FL_DARK_MAGENTA);
-	vertical[vertical.size() - 1]->set_color(FL_DARK_MAGENTA);
-	attach(*vertical[vertical.size() - 2]);
-	attach(*vertical[vertical.size() - 1]);
+					std::string num(1, '1' + i);
+					if (i == 9)
+						num = "10";
+					std::string lett(1, 'A' + i);
+
+
+					vertical.push_back(new Graph_lib::Text({ startX + 55, startY + i * squareLenght - 50 }, num));
+					vertical[i]->set_color(FL_DARK_MAGENTA);
+					attach(*vertical[i]);
+
+					horizontal.push_back(new Graph_lib::Text({ startX + i * squareLenght + 135, startY - 100 }, lett));
+					horizontal[i]->set_color(FL_DARK_MAGENTA);
+					attach(*horizontal[i]);
+
+					fieldR.emplace_back();
+					for (int j = 0; j < 10; ++j)
+					{
+						fieldR[i].push_back(new Graph_lib::Image({ startY + i * squareLenght,
+						  startX + j * squareLenght },
+							folder_path + "water_texture.jpg"));
+						attach(*fieldR[i][j]);
+					}
+				}
 }
 
 void Field::clear_field()

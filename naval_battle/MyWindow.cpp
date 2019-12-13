@@ -236,6 +236,7 @@ void MyWindow::random_fun()
 		}
 		i++;
 	}
+	random_button->hide();
 	redraw();
 }
 
